@@ -210,7 +210,7 @@ class ClinicController extends Controller
 
         $res = Reservations::create([
             'type' => 'clinic',
-            'approved' => '0',
+            'status' => 'require-time',
         ]);
 
 

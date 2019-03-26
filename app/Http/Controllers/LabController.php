@@ -103,7 +103,7 @@ class LabController extends Controller
 
         $res = Reservations::create([
             'type' => 'lab',
-            'approved' => '0',
+            'status' => 'require-time',
         ]);
 
         LabRegistration::create([
