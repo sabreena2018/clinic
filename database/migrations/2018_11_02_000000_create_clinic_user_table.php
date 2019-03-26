@@ -30,12 +30,11 @@ class CreateClinicUserTable extends Migration
             $table->string('serviceL');
 
 
-            $table->foreign('clinic_id')->references('id')->on('clinics');
-            $table->foreign('reservation_id')->references('id')->on('reservations');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('doctor_id')->references('id')->on('users');
-            $table->foreign('specialties_id')->references('id')->on('users');
-            $table->foreign('country_id')->references('id')->on('countries');
+//            $table->foreign('clinic_id')->references('id')->on('clinics');
+//            $table->foreign('user_id')->references('id')->on('users');
+//            $table->foreign('doctor_id')->references('id')->on('users');
+//            $table->foreign('specialties_id')->references('id')->on('users');
+//            $table->foreign('country_id')->references('id')->on('countries');
 
             $table->timestamps();
             $table->softDeletes();
