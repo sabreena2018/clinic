@@ -37,6 +37,10 @@ Route::group(['middleware' => 'redirect_if_private'], function () {
     Route::get('userClinic', 'Auth\Role\ClinicController@indexUserClinic')
         ->name('clinic.indexUserClinic');
 
+    Route::get('StoreuserClinic', 'Auth\Role\ClinicController@storeClinicUser')
+        ->name('clinic.storeClinicUser');
+
+
     Route::get('clinic/create', 'Auth\Role\ClinicController@create')
         ->name('clinic.create');
 
