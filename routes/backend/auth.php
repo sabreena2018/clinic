@@ -14,6 +14,17 @@ use App\Http\Controllers\Backend\Auth\User\UserConfirmationController;
  */
 
 
+Route::get('reservation', 'Auth\Role\ReservationController@index')
+    ->name('reservation.index');
+
+
+Route::get('reservation/{reservation}/edit', 'Auth\Role\ReservationController@edit')
+    ->name('reservation.edit');
+
+Route::post('reservationstoreItems', 'Auth\Role\ReservationController@storeItems')
+    ->name('reservation.storeItems');
+
+
 
 Route::get('registration', 'Auth\Role\RegistrationController@index')
     ->name('registration.index');

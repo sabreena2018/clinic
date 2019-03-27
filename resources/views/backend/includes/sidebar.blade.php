@@ -43,22 +43,22 @@
             @endif
 
 
-            {{--@if(isAdmin())--}}
+            @if(isAdmin())
 
 
-                {{--<li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern('admin/clinic*'), 'open') }}">--}}
-                            {{--<a class="nav-link {{ active_class(Active::checkUriPattern('admin/clinic/*')) }}"--}}
-                               {{--href="{{ route('admin.registration.index') }}">--}}
-                                {{--Registrations--}}
-                                {{--@if ($pending_approval > 0)--}}
-                                    {{--<span class="badge badge-danger">{{ $pending_approval }}</span>--}}
-                                {{--@endif--}}
-                            {{--</a>--}}
+                <li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern('admin/clinic*'), 'open') }}">
+                            <a class="nav-link {{ active_class(Active::checkUriPattern('admin/clinic/*')) }}"
+                               href="{{ route('admin.reservation.index') }}">
+                                Reservations
+                                @if ($pending_approval > 0)
+                                    <span class="badge badge-danger">{{ $pending_approval }}</span>
+                                @endif
+                            </a>
 
-                {{--</li>--}}
+                </li>
 
 
-            {{--@endif--}}
+            @endif
 
             @if(canSeeClinics($logged_in_user))
                 <li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern('admin/clinic*'), 'open') }}">
