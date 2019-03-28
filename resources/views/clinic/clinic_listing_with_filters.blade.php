@@ -43,28 +43,33 @@
 
             <div class="col-md-3">
                 <label> Choose appointment</label>
-                <input type="text" class="form-control" name="datetimes" id="appointment"/>
+                <input class="form-control" id="dateF" name="dateF" placeholder="MM/DD/YYY" type="text" autocomplete="off"/>
 
                 <script>
-                    $(function () {
-                        $('input[name="datetimes"]').daterangepicker({
-                            timePicker: true,
-                            startDate: moment().startOf('hour'),
-                            endDate: moment().startOf('hour').add(32, 'hour'),
-                            locale: {
-                                format: 'M/DD hh:mm A'
-                            }
-                        });
-                    });
+                    $(document).ready(function(){
+                        var date_input=$('input[name="dateF"]'); //our date input has the name "date"
+                        var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+                        var options={
+                            format: 'yyyy-mm-dd',
+                            container: container,
+                            todayHighlight: true,
+                            autoclose: true,
+                        };
+                        date_input.datepicker(options);
+                    })
                 </script>
 
+            </div>
+
+            <div class="col-md-3">
+                <label for="Tperiod">Time Period</label>
+                {!! Form::select('TperiodF', ['' => 'None','morning' => 'Morning', 'evening' => 'Evening'], null, ['id' => 'TperiodF','class' => 'form-control select2_class_Tperiod']); !!}
             </div>
 
 
             <div class="col-md-3">
                 <label for="phone">Service Location</label>
                 {!! Form::select('service_locationF', ['' => 'None','home' => 'Home', 'clinic' => 'Clinic'], null, ['id' => 'service_locationF','class' => 'form-control select2_class_service_location']); !!}
-
 
             </div>
 
@@ -121,9 +126,9 @@
                     specialties: $("#specialtiesF").val(),
                     countries: $("#countriesF").val(),
                     city: $("#cityFwe").val(),
-                    appointment: $("#appointment").val(),
-                    Tperiod: $("#Tperiod").val(),
-                    Home_clinic: $("#service_location").val(),
+                    date: $("#dateF").val(),
+                    Tperiod: $("#TperiodF").val(),
+                    Home_clinic: $("#service_locationF").val(),
                 },
                 success: function (result) {
                     $('.load-table').html(result);

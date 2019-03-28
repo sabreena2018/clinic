@@ -109,13 +109,14 @@ class ClinicController extends Controller
     public function indexUserClinic(Request $request)
     {
 
-        $doctorsFilter = $request->get('doctors', []);
-        $clinicsFilter = $request->get('clinics', []);
-        $specialtiesFilter = $request->get('specialties', []);
-        $countriesFilter = $request->get('countries', []);
+        $doctorsFilter = $request->get('doctors');
+        $clinicsFilter = $request->get('clinics');
+        $specialtiesFilter = $request->get('specialties');
+        $countriesFilter = $request->get('countries');
         $cityFilter = $request->get('city');
-        $appointment = $request->get('appointment', []);
-        $Home_clinic = $request->get('Home_clinic', []);
+        $date = $request->get('date');
+        $Home_clinic = $request->get('Home_clinic');
+        $Tperiod = $request->get('Tperiod');
 
 
         $userID = \Auth::user()->id;
@@ -133,54 +134,20 @@ class ClinicController extends Controller
             return $q->whereIn('country_id', $countriesFilter);
         })
         ->when($cityFilter, function ($q) use ($cityFilter) {
-            return $q->whereIn('city', $cityFilter);
+            return $q->where('city', $cityFilter);
+        })
+        ->when($date, function ($q) use ($date) {
+            return $q->where('appointment', $date);
+        })
+        ->when($Tperiod, function ($q) use ($Tperiod) {
+            return $q->where('Tperiod', $Tperiod);
         })
         ->when($Home_clinic, function ($q) use ($Home_clinic) {
-            return $q->whereIn('serviceL', $Home_clinic);
+            return $q->where('serviceL', $Home_clinic);
         })
         ->orderBy('id', 'asc')
         ->paginate(25);
 
-//        $clinics = Clinic::query()
-//            ->when($clinicsFilter, function ($q) use ($clinicsFilter) {
-//                return $q->whereIn('clinics.id', $clinicsFilter);
-//            })
-//            ->when($doctorsFilter, function ($q) use ($doctorsFilter) {
-//                return $q->whereHas('specialties', function ($query) use ($doctorsFilter) {
-//                    $query = $query->join('user_clinic_specialties', 'clinic_specialties.id', '=', 'user_clinic_specialties.clinic_specialties_id')
-//                        ->whereIn('user_clinic_specialties.user_id', $doctorsFilter);
-//                    return $query;
-//                });
-//            })
-//            ->when($specialtiesFilter, function ($q) use ($specialtiesFilter) {
-//                return $q->whereHas('specialties', function ($query) use ($specialtiesFilter) {
-//                    return $query->whereIn('specialties.id', $specialtiesFilter);
-//                });
-//            })
-//            ->when($countriesFilter, function ($q) use ($countriesFilter) {
-//                return $q->whereIn('clinics.country_id', $countriesFilter);
-//            })
-//            ->when($cityFilter, function ($q) use ($cityFilter) {
-//                return $q->where('clinics.city', 'LIKE', "%$cityFilter%");
-//            })
-//            ->when($user->type == 'owner', function ($q) use ($user) {
-//                return $q->where('owner_id', $user->id);
-//            })
-//            ->when($user->type == 'patient', function ($q) use ($user) {
-//                return $q->where('approved', 1);
-//            })
-//            ->when($user->type == 'doctor', function ($q) use ($user) {
-//                return $q->whereHas('specialties', function ($query) {
-//                    $query = $query->join('user_clinic_specialties', 'clinic_specialties.id', '=', 'user_clinic_specialties.clinic_specialties_id')
-//                        ->whereIn('user_clinic_specialties.user_id', [currentUser()->id]);
-//                    return $query;
-//                });
-//            })
-//            ->when($serviceLocation, function ($q) use ($serviceLocation) {
-//                return $q->where('service_location', $serviceLocation);
-//            })
-//            ->orderBy('id', 'asc')
-//            ->paginate(25);
 
         if ($request->get('view', false)) {
             return view('clinic.partial.table', compact('clinics'));
