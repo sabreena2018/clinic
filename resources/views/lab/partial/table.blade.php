@@ -13,7 +13,7 @@
                 <tbody>
                 @foreach($labs as $lab)
                     <tr>
-                        <td>{{ \App\Models\Auth\Lab::find($lab->id)->name }}</td>
+                        <td>{{ \App\Models\Auth\Lab::find($lab->lab_id)->name }}</td>
                         <td>{{ $lab->appointment }}</td>
                         <td>{{ $lab->Tperiod }}</td>
                         <td>{!! $lab->action_buttons !!}</td>

@@ -21,7 +21,7 @@ Route::get('reservation', 'Auth\Role\ReservationController@index')
 Route::get('reservation/{reservation}/edit', 'Auth\Role\ReservationController@edit')
     ->name('reservation.edit');
 
-Route::post('reservationstoreItems', 'Auth\Role\ReservationController@storeItems')
+Route::get('reservationstoreItems', 'Auth\Role\ReservationController@storeItems')
     ->name('reservation.storeItems');
 
 

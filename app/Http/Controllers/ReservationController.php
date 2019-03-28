@@ -28,7 +28,7 @@ class ReservationController extends Controller
      */
     public function index(Request $request)
     {
-        $reservations = Reservations::orderBy('id', 'asc')
+        $reservations = Reservations::orderBy('status', 'asc')
             ->paginate(25);
 
 
@@ -53,20 +53,18 @@ class ReservationController extends Controller
     public function storeItems(Request $request)
     {
 
-        dd($request);
-//        $res = Reservations::find($reservation->id);
-//        $res->status = "waiting-choose";
-//        $res->save();
+        $res = Reservations::find($request->reservation_id);
+        $res->status = "waiting-choose";
+        $res->save();
 
 
-//        TimesResgistration::create([
-//
-//            'reservation_id' => $res->id,
-//            'time' => '',
-//
-//        ]);
+        foreach ($request->listitem as $item){
+            TimesResgistration::create([
+                'reservation_id' => $request->reservation_id,
+                'time' => $item,
+            ]);
+        }
 
-        return view('reservation.index');
     }
 
 
