@@ -13,10 +13,23 @@
                 <tbody>
                 @foreach($labs as $lab)
                     <tr>
+
+
+
+
+
                         <td>{{ \App\Models\Auth\Lab::find($lab->lab_id)->name }}</td>
                         <td>{{ $lab->appointment }}</td>
                         <td>{{ $lab->Tperiod }}</td>
-                        <td>{!! $lab->action_buttons !!}</td>
+                        <td>
+                            @php
+
+                                if ((\App\Reservations::find($lab->reservation_id)->status) == 'waiting-choose'){
+                                        echo $lab->action_buttons;
+                                }
+                            @endphp
+
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -37,3 +50,6 @@
         </div>
     </div><!--col-->
 </div><!--row-->
+
+
+

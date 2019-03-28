@@ -11,6 +11,8 @@ use App\Models\Auth\Traits\Attribute\RoleAttribute;
 class Lab extends Model
 {
 
+    use LabAttribute;
+
     protected $table = 'labs';
     protected $guarded = ['id'];
 

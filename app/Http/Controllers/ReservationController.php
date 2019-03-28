@@ -67,6 +67,12 @@ class ReservationController extends Controller
 
     }
 
+    public function storeTimeUserIndex(Request $request)
+    {
+        logger($request);
+    }
+
+
 
 
 }
