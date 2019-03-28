@@ -110,9 +110,11 @@
 
                                 {{--<button class="btn btn-primary mb-1" type="button" data-toggle="modal" data-target="#clinicModal">Reserve Appointment</button>--}}
                                     <br>
+                                    <div class="row">
                                     <div class="col text-right">
                                             {{ form_submit(__('buttons.general.crud.create')) }}
                                         </div><!--col-->
+                                    </div>
 
 
 

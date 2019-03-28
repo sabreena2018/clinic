@@ -1,14 +1,15 @@
 <div class="card">
     <h5 class="card-header">
         Filter
-        {!! Form::submit('Search', ['id' => 'search_btn', 'class' => 'btn-sm float_right']); !!}
+        {!! Form::submit('Search', ['id' => 'search_btn', 'class' => 'btn btn-primary float_right']); !!}
 
-        <button class="btn-sm float_right" type="button" data-toggle="collapse"
-                data-target="#collapsePanel" aria-expanded="false" aria-controls="collapseExample">
+        <button class="btn btn-primary float_right" type="button" data-toggle="collapse"
+                href="#collapsePanel" aria-expanded="false" aria-controls="collapsePanel">
             Collapse
         </button>
     </h5>
-    <div id="collapsePanel" class="card-body">
+    <div class="card-body">
+    <div id="collapsePanel" class="collapse multi-collapse">
 
         <div class="row">
             <div class="col-md-3">
@@ -76,6 +77,7 @@
         </div>
 
     </div>
+    </div>
 </div>
 
 <div class="load-table">
@@ -88,6 +90,7 @@
     $(document).ready(function () {
 
         let body = $('body');
+
 
         body.on('click', '.select_all', function () {
             $('input:checkbox').not(this).prop('checked', this.checked);
