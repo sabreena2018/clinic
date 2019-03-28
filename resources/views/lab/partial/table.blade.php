@@ -5,23 +5,17 @@
                 <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Specialties</th>
-                    <th>Doctors</th>
-                    <th>Country</th>
-                    <th>City</th>
-                    <th>Approved</th>
+                    <th>Appointment Date</th>
+                    <th>Time Period</th>
                     <th>@lang('labels.general.actions')</th>
                 </tr>
 
                 <tbody>
                 @foreach($labs as $lab)
                     <tr>
-                        <td>{{ ucwords($lab->name) }}</td>
-                        <td>{!! badges($lab->specialties()->pluck('specialties.name')->toArray()) !!}</td>
-                        <td>{!! badges(app(\App\Methods\ClinicMethods::class)->getClinicDoctors($lab), 'primary')!!}</td>
-                        <td>{{ $lab->country->name }}</td>
-                        <td>{{ $lab->city }}</td>
-                        <td>{!! $lab->approved ? badges(['YES']): badges(['NO'], 'danger')!!}</td>
+                        <td>{{ \App\Models\Auth\Lab::find($lab->id)->name }}</td>
+                        <td>{{ $lab->appointment }}</td>
+                        <td>{{ $lab->Tperiod }}</td>
                         <td>{!! $lab->action_buttons !!}</td>
                     </tr>
                 @endforeach

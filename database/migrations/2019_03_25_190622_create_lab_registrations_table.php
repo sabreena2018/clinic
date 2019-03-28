@@ -17,6 +17,7 @@ class CreateLabRegistrationsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('reservation_id')->index();
             $table->unsignedInteger('lab_id')->index();
+            $table->unsignedInteger('user_id');
             $table->date('appointment');
             $table->string('Tperiod');
             $table->timestamps();
