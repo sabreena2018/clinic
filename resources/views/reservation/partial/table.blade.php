@@ -15,7 +15,7 @@
                     <tr>
                         <td>{{ $reservation->type }}</td>
                         <td>{{ $reservation->status }}</td>
-                        <td>{{ $reservation->created_at }}</td>
+                        <td>{{ $reservation->appointment }}</td>
                         <td>{!! $reservation->action_buttons !!}</td>
                     </tr>
                 @endforeach

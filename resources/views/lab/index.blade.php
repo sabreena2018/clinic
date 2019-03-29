@@ -126,6 +126,7 @@
                         intDeleteButton();
                     },
                     error: function (result) {
+                        window.alert("eror");
                     }
                 });
 

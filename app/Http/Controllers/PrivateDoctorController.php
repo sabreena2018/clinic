@@ -16,6 +16,7 @@ use App\Http\Requests\Backend\Auth\Role\StoreRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\ManageRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\UpdateRoleRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class PrivateDoctorController.
@@ -88,6 +89,15 @@ class PrivateDoctorController extends Controller
     {
         return view('private-doctor.show', compact('private-doctor'));
     }
+
+
+    public function getDoctorsDependOnSpecialties(Request $request)
+    {
+        $db = DB::select("select id,first_name,last_name from users where id in (select user_id from user_specialties where specialties_id= {$request->specialties_id})");
+        return $db;
+
+    }
+
 
     public function store(PrivateDoctorRequest $request, $privateDoctor)
     {
@@ -216,6 +226,8 @@ class PrivateDoctorController extends Controller
 
         return response()->json(['message' => 'The private-doctor was successfully rejected.'], 200);
     }
+
+
 
 
 }

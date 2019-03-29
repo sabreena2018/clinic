@@ -69,6 +69,12 @@ Route::group(['middleware' => 'redirect_if_private'], function () {
     Route::post('labReg', 'Auth\Role\LabController@storeLabReg')
         ->name('lab.storeReg');
 
+    Route::post('privateDoctorstoreReg', 'Auth\Role\PrivateDoctorController@storePrivateDoctorReg')
+        ->name('private-Doctor.storeReg');
+
+    Route::get('privateDoctorgetDoctorsDependOnSpecialties', 'Auth\Role\PrivateDoctorController@getDoctorsDependOnSpecialties')
+        ->name('private-doctor.getDoctorsDependOnSpecialties');
+
     Route::group(['prefix' => 'clinic/{clinic}'], function () {
         Route::get('edit', 'Auth\Role\ClinicController@edit')
             ->name('clinic.edit');

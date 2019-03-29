@@ -11,6 +11,7 @@ use App\Models\Auth\Nurse;
 use App\Models\Auth\PrivateDoctor;
 use App\Models\Auth\Specialties;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class GeneralMethods
 {
@@ -23,6 +24,13 @@ class GeneralMethods
             $map[$doctor->id] = $doctor->full_name;
         }
         return $map;
+    }
+
+    public function getDoctorsWithSpecialties($specialties_id)
+    {
+//        $doctors = DB::select('select * from user_specialties where specialties_id= :id',['id' => $specialties_id]);
+//        logger($doctors);
+//        dd(1);
     }
 
 
@@ -105,5 +113,8 @@ class GeneralMethods
         }
         return $map;
     }
+
+
+
 
 }
