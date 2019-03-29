@@ -14,6 +14,8 @@ use App\Models\Auth\Traits\Attribute\RoleAttribute;
 class ClinicUser extends Model
 {
 
+    use ClinicAttribute;
+
     protected $table = 'clinic_user';
     protected $guarded = ['id'];
 

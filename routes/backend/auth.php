@@ -21,8 +21,16 @@ Route::get('reservation', 'Auth\Role\ReservationController@index')
 Route::get('reservation/{reservation}/edit', 'Auth\Role\ReservationController@edit')
     ->name('reservation.edit');
 
-Route::post('reservationstoreItems', 'Auth\Role\ReservationController@storeItems')
+Route::get('reservationstoreItems', 'Auth\Role\ReservationController@storeItems')
     ->name('reservation.storeItems');
+
+
+Route::get('reservationstoreTimeUserIndex', 'Auth\Role\ReservationController@storeTimeUserIndex')
+    ->name('reservation.storeTimeUserIndex');
+
+
+Route::get('reservationchooseTimeUser', 'Auth\Role\ReservationController@chooseTimeUser')
+    ->name('reservation.chooseTimeUser');
 
 
 

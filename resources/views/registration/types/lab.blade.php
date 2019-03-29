@@ -24,7 +24,6 @@
                         </div>
 
                         <div class="card-body">
-                            <div class="row">
                                 {{ html()->form('POST', route('admin.lab.storeReg'))->class('form-horizontal')->open() }}
                                 <div  class="card-body">
 
@@ -36,7 +35,7 @@
 
                                         <div class="col-md-4">
                                             <label> Choose appointment</label>
-                                            <input class="form-control" id="date" name="date" placeholder="MM-DD-YYY" type="text"/>
+                                            <input class="form-control" id="date" name="date" placeholder="MM-DD-YYY" type="text" autocomplete="off"/>
 
                                         </div>
 
@@ -53,16 +52,17 @@
 
                                     {{--<button class="btn btn-primary mb-1" type="button" data-toggle="modal" data-target="#clinicModal">Reserve Appointment</button>--}}
                                     <br>
-                                    <div class="col text-right">
-                                        {{ form_submit(__('buttons.general.crud.create')) }}
-                                    </div><!--col-->
+                                    <div class="row">
+                                        <div class="col text-right">
+                                            {{ form_submit(__('buttons.general.crud.create')) }}
+                                        </div><!--col-->
+                                    </div>
 
 
 
 
 
                                 </div>
-                            </div>
                             {{ html()->form()->close() }}
                         </div>
                     </div>
@@ -73,6 +73,14 @@
 
             </div>
         </div>
+
+
+        <div class="card">
+            <div class="card-body">
+                @include('lab.lab_listing_with_filters')
+            </div>
+        </div>
+
 
 
         @push('after-styles')

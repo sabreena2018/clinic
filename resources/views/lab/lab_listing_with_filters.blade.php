@@ -13,33 +13,16 @@
 
         <div class="row">
             <div class="col-md-3">
-                <div>Doctors</div>
-                {!! Form::select('doctorsF[]', app(\App\Methods\GeneralMethods::class)->getAllDoctors(), null, ['id' => 'doctorsF', 'class' => 'form-control select2_class_doctor', 'multiple' => 'multiple']); !!}
-            </div>
-
-            <div class="col-md-3">
-                <div>Clinics</div>
-                {!! Form::select('clinicsF[]', app(\App\Methods\GeneralMethods::class)->getAllClinics(), null, ['id' => 'clinicsF','class' => 'form-control select2_class_clinic', 'multiple' => 'multiple']); !!}
-            </div>
-
-            <div class="col-md-3">
-                <div>Specialties</div>
-                {!! Form::select('specialtiesF[]', app(\App\Methods\GeneralMethods::class)->getAllSpecialties(), null, ['id' => 'specialtiesF','class' => 'form-control select2_class_specialties', 'multiple' => 'multiple']); !!}
-            </div>
-
-            <div class="col-md-3">
-                <div>Countries</div>
-                {!! Form::select('countriesF[]', app(\App\Methods\GeneralMethods::class)->getAllCountries(), null, ['id' => 'countriesF','class' => 'form-control select2_class_countries', 'multiple' => 'multiple']); !!}
-            </div>
-
-
-            <div class="col-md-3">
-                <div>City</div>
-                {!!  html()->text('city')
-                    ->id('cityFwe')
-                    ->class('form-control')
-                    ->placeholder('City')
-                    ->autofocus()  !!}
+                <label for="lab">Lab</label>
+                {{--@php--}}
+                {{--$arr = array();--}}
+                {{--$arr = app(\App\Methods\GeneralMethods::class)->getAllLabs();--}}
+                {{--array_unshift($arr , 'None');--}}
+                {{--dd($arr);--}}
+                {{--@endphp--}}
+{{--                {!! $arr = app(\App\Methods\GeneralMethods::class)->getAllLabs() !!}--}}
+                {{--{!! Form::select('labF', $arr, null, ['id' => 'labF','class' => 'form-control select2_class_Tperiod']); !!}--}}
+                    {!! Form::select('labF', app(\App\Methods\GeneralMethods::class)->getAllLabs(), null, ['id' => 'labF', 'class' => 'form-control select2_class_doctor', 'multiple' => 'multiple']); !!}
             </div>
 
             <div class="col-md-3">
@@ -68,11 +51,6 @@
             </div>
 
 
-            <div class="col-md-3">
-                <label for="phone">Service Location</label>
-                {!! Form::select('service_locationF', ['' => 'None','home' => 'Home', 'clinic' => 'Clinic'], null, ['id' => 'service_locationF','class' => 'form-control select2_class_service_location']); !!}
-
-            </div>
 
         </div>
 
@@ -112,7 +90,7 @@
             placeholder: "Select Countries",
         });
 
-        $('.load-table').load('{{route('admin.clinic.indexUserClinic')}}?view=true', function () {
+        $('.load-table').load('{{route('admin.lab.index')}}?view=true', function () {
             intDeleteButton();
         });
 
@@ -122,16 +100,11 @@
             e.preventDefault();
             $.ajax({
                 type: "GET",
-                url: "{{route('admin.clinic.indexUserClinic')}}?view=true",
+                url: "{{route('admin.lab.index')}}?view=true",
                 data: {
-                    doctors: $("#doctorsF").val(),
-                    clinics: $("#clinicsF").val(),
-                    specialties: $("#specialtiesF").val(),
-                    countries: $("#countriesF").val(),
-                    city: $("#cityFwe").val(),
+                    lab: $("#labF").val(),
                     date: $("#dateF").val(),
                     Tperiod: $("#TperiodF").val(),
-                    Home_clinic: $("#service_locationF").val(),
                 },
                 success: function (result) {
                     $('.load-table').html(result);

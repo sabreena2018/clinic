@@ -17,7 +17,7 @@
 
             <hr/>
 
-            {{ html()->form('POST', route('admin.reservation.storeItems'))->class('form-horizontal')->open() }}
+
             <div class="card">
                 <div class="card-body">
                     <div class="row">
@@ -33,28 +33,29 @@
 
                     <div class="row mt-4">
                         <div class="col">
-                            {{--<div class="form-group row">--}}
-                                {{--{{ html()->label(__('validation.attributes.backend.access.roles.name'))--}}
-                                    {{--->class('col-md-2 form-control-label')--}}
-                                    {{--->for('name') }}--}}
 
-                                {{--<div class="col-md-4">--}}
-                                    {{--{{ html()->text('name')--}}
-                                        {{--->class('form-control')--}}
-                                        {{--->placeholder(__('validation.attributes.backend.access.roles.name'))--}}
-                                        {{--->attribute('maxlength', 191)--}}
-                                        {{--->required()--}}
-                                        {{--->autofocus() }}--}}
-                                {{--</div><!--col-->--}}
-                            {{--</div><!--form-group-->--}}
-
-                            <input type="hidden" name="aaaaa" id="wmewwwthod" value="wwwwww">
 
                             <div class="row">
+                                <div class="col-md-4">
+                                    {{--<label> Patient Name: {{ \App\Models\Auth\User::find((\App\LabRegistration::find($reservation->id)->user_id))->name }}</label>--}}
+                                    <label> Patient Name: {{ \App\Models\Auth\User::find($reservation->user_id)->name }}</label>
 
+                                </div><!--col-->
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label> Appointment Date: {{ (\App\Reservations::find($reservation->id)->appointment)}}</label>
+                                </div><!--col-->
+                            </div>
+
+
+
+                            <div class="row">
                                 <div class="col-md-4">
                                     {{ html()->text('Times')
                                         ->class('form-control')
+                                        ->placeholder('Time')
                                         ->id('time')
                                         ->autofocus() }}
                                 </div><!--col-->
@@ -64,7 +65,7 @@
 
 
                                 <div class="col-md-3">
-                                    <button type="button" id="button_insert" class="btn btn-warning">Insert</button>
+                                    <button type="button" id="button_insert" class="btn btn-warning">Insert >> </button>
                                 </div>
 
 
@@ -92,12 +93,11 @@
                         </div><!--col-->
 
                         <div class="col text-right">
-                            {{ form_submit(__('buttons.general.crud.create')) }}
+                            <button type="button" id="button_done" class="btn btn-warning">Done</button>
                         </div><!--col-->
                     </div><!--row-->
                 </div><!--card-footer-->
             </div><!--card-->
-            {{ html()->form()->close() }}
 
 
         <script type="application/javascript">
@@ -121,31 +121,31 @@
                     listitems.push(time.value);
                     time.value = "";
 
-                    var text = '<input type="hidden" name="list" value='+ time.value() +'fieldvalue" />';
-                    $('#form').append(text);
-
-//                     var input = document.createElement("input");
-//                     input.setAttribute("type", "hidden");
-//                     input.setAttribute("name", "list");
-//                     input.setAttribute("value", time.value());
-//
-// //append to form element that you want .
-//                     document.getElementById("chells").appendChild(input);
-
                 });
+
+
+
+
 
                 body.on('click', '#button_done', function (e) {
                     if( $('#mylist li').length >= 1 ){
+                        e.preventDefault();
+                        $.ajax({
+                            type: "GET",
+                            url: "{{route('admin.reservation.storeItems')}}?view=true",
+                            data: {
+                                reservation_id : '{{ $reservation->id}}',
+                                listitem : listitems,
+                            },
+                            success: function (result) {
+                                window.location.href = "{{route('admin.reservation.index')}}";
+                                intDeleteButton();
+                            },
+                            error: function (result) {
+                                window.alert("error");
+                            }
+                        });
 
-
-{{--                        {{ action('Auth\Role\ReservationController@index') }}--}}
-
-
-                        {{--$.ajax({--}}
-                            {{--url:'{{route('admin.reservation.index')}}?view=true',--}}
-                            {{--type: "get",--}}
-
-                        {{--});--}}
                     }
                 });
 

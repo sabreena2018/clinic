@@ -29,49 +29,28 @@ class LabController extends Controller
      */
     public function index(ClinicRequest $request)
     {
-        $doctorsFilter = $request->get('doctors', []);
-        $labsFilter = $request->get('labs', []);
-        $specialtiesFilter = $request->get('specialties', []);
-        $countriesFilter = $request->get('countries', []);
-        $cityFilter = $request->get('city', []);
+
+        $labFilter = $request->get('lab');
+        $dateFilter = $request->get('date');
+        $TperiodFilter = $request->get('Tperiod');
 
 
-        $user = \Auth::user();
-        $labs = Lab::query()
-            ->when($labsFilter, function ($q) use ($labsFilter) {
-                return $q->whereIn('clinics.id', $labsFilter);
+        $labs = LabRegistration::query()
+            ->where('user_id',\Auth::user()->id)
+            ->when($labFilter,function ($q) use ($labFilter){
+                return $q->whereIn('lab_id',$labFilter);
             })
-            ->when($doctorsFilter, function ($q) use ($doctorsFilter) {
-                return $q->whereHas('specialties', function ($query) use ($doctorsFilter) {
-                    $query = $query->join('user_clinic_specialties', 'clinic_specialties.id', '=', 'user_clinic_specialties.clinic_specialties_id')
-                        ->whereIn('user_clinic_specialties.user_id', $doctorsFilter);
-                    return $query;
-                });
+
+            ->when($dateFilter,function ($q) use ($dateFilter){
+                return $q->where('appointment',$dateFilter);
             })
-            ->when($specialtiesFilter, function ($q) use ($specialtiesFilter) {
-                return $q->whereHas('specialties', function ($query) use ($specialtiesFilter) {
-                    return $query->whereIn('specialties.id', $specialtiesFilter);
-                });
+
+
+            ->when($TperiodFilter,function ($q) use ($TperiodFilter){
+                return $q->where('Tperiod',$TperiodFilter);
             })
-            ->when($countriesFilter, function ($q) use ($countriesFilter) {
-                return $q->whereIn('clinics.country_id', $countriesFilter);
-            })
-            ->when($cityFilter, function ($q) use ($cityFilter) {
-                return $q->where('clinics.city', 'LIKE', "%$cityFilter%");
-            })
-            ->when($user->type == 'owner', function ($q) use ($user) {
-                return $q->where('owner_id', $user->id);
-            })
-            ->when($user->type == 'patient', function ($q) use ($user) {
-                return $q->where('approved', 1);
-            })
-            ->when($user->type == 'doctor', function ($q) use ($user) {
-                return $q->whereHas('specialties', function ($query) {
-                    $query = $query->join('user_clinic_specialties', 'clinic_specialties.id', '=', 'user_clinic_specialties.clinic_specialties_id')
-                        ->whereIn('user_clinic_specialties.user_id', [currentUser()->id]);
-                    return $query;
-                });
-            })
+
+
             ->orderBy('id', 'asc')
             ->paginate(25);
 
@@ -80,6 +59,45 @@ class LabController extends Controller
         }
 
         return view('lab.index', compact('labs'));
+
+
+
+//        $labs = Lab::query()
+//            ->when($labsFilter, function ($q) use ($labsFilter) {
+//                return $q->whereIn('clinics.id', $labsFilter);
+//            })
+//            ->when($doctorsFilter, function ($q) use ($doctorsFilter) {
+//                return $q->whereHas('specialties', function ($query) use ($doctorsFilter) {
+//                    $query = $query->join('user_clinic_specialties', 'clinic_specialties.id', '=', 'user_clinic_specialties.clinic_specialties_id')
+//                        ->whereIn('user_clinic_specialties.user_id', $doctorsFilter);
+//                    return $query;
+//                });
+//            })
+//            ->when($specialtiesFilter, function ($q) use ($specialtiesFilter) {
+//                return $q->whereHas('specialties', function ($query) use ($specialtiesFilter) {
+//                    return $query->whereIn('specialties.id', $specialtiesFilter);
+//                });
+//            })
+//            ->when($countriesFilter, function ($q) use ($countriesFilter) {
+//                return $q->whereIn('clinics.country_id', $countriesFilter);
+//            })
+//            ->when($cityFilter, function ($q) use ($cityFilter) {
+//                return $q->where('clinics.city', 'LIKE', "%$cityFilter%");
+//            })
+//            ->when($user->type == 'owner', function ($q) use ($user) {
+//                return $q->where('owner_id', $user->id);
+//            })
+//            ->when($user->type == 'patient', function ($q) use ($user) {
+//                return $q->where('approved', 1);
+//            })
+//            ->when($user->type == 'doctor', function ($q) use ($user) {
+//                return $q->whereHas('specialties', function ($query) {
+//                    $query = $query->join('user_clinic_specialties', 'clinic_specialties.id', '=', 'user_clinic_specialties.clinic_specialties_id')
+//                        ->whereIn('user_clinic_specialties.user_id', [currentUser()->id]);
+//                    return $query;
+//                });
+//            })
+
     }
 
     /**
@@ -104,12 +122,15 @@ class LabController extends Controller
         $res = Reservations::create([
             'type' => 'lab',
             'status' => 'require-time',
+            'user_id' => \Auth::user()->id,
+            'appointment' => $request->get('date'),
         ]);
 
         LabRegistration::create([
 
             'reservation_id' => $res->id,
             'lab_id' => $request->get('labs'),
+            'user_id' => \Auth::user()->id,
             'appointment' => $request->get('date'),
             'Tperiod' => $request->get('Tperiod'),
 

@@ -87,29 +87,14 @@
 
                                         <div class="col-md-3">
                                             <label> Choose appointment</label>
-                                            {{--<input type="text" class="form-control" name="datetimes" id="appointment"/>--}}
-
-                                            {{--<script>--}}
-                                                {{--$(function () {--}}
-                                                    {{--$('input[name="datetimes"]').daterangepicker({--}}
-                                                        {{--timePicker: true,--}}
-                                                        {{--startDate: moment().startOf('hour'),--}}
-                                                        {{--endDate: moment().startOf('hour').add(32, 'hour'),--}}
-                                                        {{--locale: {--}}
-                                                            {{--format: 'M/DD hh:mm A'--}}
-                                                        {{--}--}}
-                                                    {{--});--}}
-                                                {{--});--}}
-                                            {{--</script>--}}
-
-                                            <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text"/>
+                                            <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text" autocomplete="off"/>
 
                                         </div>
 
 
                                         <div class="col-md-3">
                                             <label for="Tperiod">Time Period</label>
-                                            {!! Form::select('Tperiod', ['' => 'None','morning' => 'Morning', 'evening' => 'Evening'], null, ['id' => 'Tperiod','class' => 'form-control select2_class_service_location']); !!}
+                                            {!! Form::select('Tperiod', ['' => 'None','morning' => 'Morning', 'evening' => 'Evening'], null, ['id' => 'Tperiod','class' => 'form-control select2_class_Tperiod']); !!}
                                         </div>
 
 
@@ -125,9 +110,11 @@
 
                                 {{--<button class="btn btn-primary mb-1" type="button" data-toggle="modal" data-target="#clinicModal">Reserve Appointment</button>--}}
                                     <br>
+                                    <div class="row">
                                     <div class="col text-right">
                                             {{ form_submit(__('buttons.general.crud.create')) }}
                                         </div><!--col-->
+                                    </div>
 
 
 
@@ -217,6 +204,10 @@
             placeholder: "Select Doctors",
         });
 
+
+        $('.select2_class_Tperiod').select2({
+            placeholder: "Select Time period",
+        });
 
         $(function () {
             $('#datetimepicker12').datetimepicker({

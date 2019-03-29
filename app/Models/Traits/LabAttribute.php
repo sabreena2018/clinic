@@ -12,7 +12,7 @@ trait LabAttribute
      */
     public function getEditButtonAttribute()
     {
-        return '<a href="' . route('admin.lab.edit', $this) . '" class="btn btn-primary"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.edit') . '"></i></a>';
+        return '<a href="' . route('admin.reservation.storeTimeUserIndex', ["id" => $this->id,'type' => 'lab']) . '" class="btn btn-primary"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.edit') . '"></i></a>';
     }
 
     /**
@@ -60,26 +60,8 @@ trait LabAttribute
      */
     public function getActionButtonsAttribute()
     {
-        $edit = '';
-        $delete = '';
-        $state = '';
-        $user = \Auth::user();
-        if (isAdmin() || $user->id == $this->owner_id) {
-            $edit = $this->edit_button;
-            $delete = $this->delete_button;
-            if (isAdmin()) {
-                if (!$this->approved) {
-                    $state = $this->approve_button;
-                } else {
-                    $state = $this->reject_button;
-                }
-            }
-        }
-        return '<div class="btn-group btn-group-sm" role="group" aria-label="'.__('labels.backend.access.users.user_actions').'">
-            '.$this->show_button.
-            $edit.
-            $delete.
-            $state.
-            '</div>';
+        $edit = $this->edit_button;
+
+        return '<div class="btn-group btn-group-sm" role="group" aria-label="'.__('labels.backend.access.users.user_actions').'">'.$edit.'</div>';
     }
 }
