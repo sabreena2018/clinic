@@ -122,6 +122,8 @@ class LabController extends Controller
         $res = Reservations::create([
             'type' => 'lab',
             'status' => 'require-time',
+            'user_id' => \Auth::user()->id,
+            'appointment' => $request->get('date'),
         ]);
 
         LabRegistration::create([

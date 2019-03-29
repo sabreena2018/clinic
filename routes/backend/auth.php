@@ -29,6 +29,10 @@ Route::get('reservationstoreTimeUserIndex', 'Auth\Role\ReservationController@sto
     ->name('reservation.storeTimeUserIndex');
 
 
+Route::get('reservationchooseTimeUser', 'Auth\Role\ReservationController@chooseTimeUser')
+    ->name('reservation.chooseTimeUser');
+
+
 
 Route::get('registration', 'Auth\Role\RegistrationController@index')
     ->name('registration.index');

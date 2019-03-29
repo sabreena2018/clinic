@@ -178,6 +178,8 @@ class ClinicController extends Controller
         $res = Reservations::create([
             'type' => 'clinic',
             'status' => 'require-time',
+            'user_id' => \Auth::user()->id,
+            'appointment' => $request->get('date'),
         ]);
 
 

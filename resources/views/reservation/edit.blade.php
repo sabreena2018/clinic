@@ -37,13 +37,15 @@
 
                             <div class="row">
                                 <div class="col-md-4">
-                                    <label> Patient Name: {{ \App\Models\Auth\User::find((\App\LabRegistration::find($reservation->id)->user_id))->name }}</label>
+                                    {{--<label> Patient Name: {{ \App\Models\Auth\User::find((\App\LabRegistration::find($reservation->id)->user_id))->name }}</label>--}}
+                                    <label> Patient Name: {{ \App\Models\Auth\User::find($reservation->user_id)->name }}</label>
+
                                 </div><!--col-->
                             </div>
 
                             <div class="row">
                                 <div class="col-md-4">
-                                    <label> Appointment Date: {{ (\App\LabRegistration::find($reservation->id)->appointment)}}</label>
+                                    <label> Appointment Date: {{ (\App\Reservations::find($reservation->id)->appointment)}}</label>
                                 </div><!--col-->
                             </div>
 
@@ -136,11 +138,11 @@
                                 listitem : listitems,
                             },
                             success: function (result) {
-                                window.location.href = "http://localhost:8080/clinic/public/admin/reservation";
+                                window.location.href = "{{route('admin.reservation.index')}}";
                                 intDeleteButton();
                             },
                             error: function (result) {
-                                window.location.href = "http://localhost:8080/clinic/public/admin/reservation";
+                                window.alert("error");
                             }
                         });
 

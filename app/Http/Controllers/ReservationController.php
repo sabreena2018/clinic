@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Backend\Auth\Role;
 
+use App\LabRegistration;
+use App\Models\Auth\ClinicUser;
 use App\Models\Auth\Lab;
 use App\Models\Auth\Role;
 use App\Http\Controllers\Controller;
@@ -31,10 +33,10 @@ class ReservationController extends Controller
         $reservations = Reservations::orderBy('status', 'asc')
             ->paginate(25);
 
-
         if ($request->get('view', false)) {
             return view('reservation.partial.table', compact('reservations'));
         }
+
         return view('reservation.index', compact('reservations'));
     }
 
@@ -67,9 +69,35 @@ class ReservationController extends Controller
 
     }
 
+
     public function storeTimeUserIndex(Request $request)
     {
-        logger($request);
+        $times = TimesResgistration::query()
+        ->where('reservation_id',$request->id)->get();
+
+
+        return view('reservation.chooseTimeUser',compact('times'));
+
+    }
+
+    public function chooseTimeUser(Request $request)
+    {
+
+        if ($request->type == 'lab'){
+            $lab = LabRegistration::find($request->reservation_id);
+            $lab->time = $request->time;
+            $lab->save();
+        }
+        elseif ($request->type == 'clinic'){
+            $clinic = ClinicUser::find($request->reservation_id);
+            $clinic->time = $request->time;
+            $clinic->save();
+        }
+
+        $res = Reservations::find($request->reservation_id);
+        $res->status = 'approved';
+        $res->save();
+
     }
 
 

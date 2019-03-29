@@ -16,6 +16,7 @@
                     <th>Location</th>
                     <th>City</th>
                     <th>Appointment</th>
+                    <th>Time</th>
                     <th>Time Period</th>
                     <th>Home / Clinic</th>
                     <th>@lang('labels.general.actions')</th>
@@ -42,10 +43,36 @@
                         <td>{{ \App\Models\Auth\Country::where('id','=',$clinic->country_id)->first()->name }}</td>
                         <td>{{ $clinic->city }}</td>
                         <td>{{ $clinic->appointment }}</td>
+                        <td>
+
+                            @php
+                                if ((\App\Reservations::find($clinic->reservation_id)->status) == 'approved'){
+                                        echo badges([$clinic->time]);
+                                }
+                                else{
+                                    echo badges(['NOT YET'],'danger');
+                                }
+                            @endphp
+
+
+
+                        </td>
                         <td>{{ $clinic->Tperiod }}</td>
                         <td>{{ $clinic->serviceL }}</td>
                         {{--<td>{!! $clinic->approved ? badges(['YES']): badges(['NO'], 'danger')!!}</td>--}}
-                        {{--<td>{!! $clinic->action_buttons !!}</td>--}}
+                        <td>
+                            @php
+                                if ((\App\Reservations::find($clinic->reservation_id)->status) == 'waiting-choose'){
+                                        echo $clinic->action_buttons;
+                                }
+                                elseif((\App\Reservations::find($clinic->reservation_id)->status) == 'require-time'){
+                                        echo '<a class="btn btn-warning"><i title="require-time"></i>Waiting</a>';
+                                }
+                                elseif ((\App\Reservations::find($clinic->reservation_id)->status) == 'approved'){
+                                    echo '<a class="btn btn-danger"><i title="approved"></i>Approved</a>';
+                                }
+                            @endphp
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

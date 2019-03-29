@@ -17,6 +17,8 @@ class CreateReservationsTable extends Migration
             $table->increments('id');
             $table->string('type');
             $table->string('status');
+            $table->unsignedInteger('user_id');
+            $table->date('appointment');
             $table->timestamps();
         });
     }

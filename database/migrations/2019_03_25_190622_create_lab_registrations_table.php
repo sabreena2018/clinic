@@ -19,6 +19,7 @@ class CreateLabRegistrationsTable extends Migration
             $table->unsignedInteger('lab_id')->index();
             $table->unsignedInteger('user_id');
             $table->date('appointment');
+            $table->time('time')->nullable();
             $table->string('Tperiod');
             $table->timestamps();
 

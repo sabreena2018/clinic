@@ -26,6 +26,7 @@ class CreateClinicUserTable extends Migration
             $table->unsignedInteger('country_id');
             $table->string('city');
             $table->date('appointment');
+            $table->time('time')->nullable();
             $table->string('Tperiod');
             $table->string('serviceL');
 
