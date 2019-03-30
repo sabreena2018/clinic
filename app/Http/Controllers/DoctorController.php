@@ -18,6 +18,7 @@ use App\Http\Requests\Backend\Auth\Role\StoreRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\ManageRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\UpdateRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\DoctorRequest;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class DoctorController.
@@ -115,6 +116,18 @@ class DoctorController extends Controller
                     ]);
             }
         }
+
+
+        foreach ($specialtiesids as $val) {
+            DB::table('user_specialties')->insert(
+                [
+                    'user_id' => $doctor->id,
+                    'specialties_id' => $val,
+                ]
+            );
+        }
+
+
 
         $user = User::find($doctor->id);
         $user->assignRole('administrator');
