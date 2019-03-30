@@ -38,8 +38,6 @@
                                     <div class="col-md-3">
                                         <div>Doctor</div>
                                         {!! Form::select('doctor',[],null, ['id' => 'doctor', 'class' => 'form-control select2_class_service_location']); !!}
-                                        {{--<select class="form-control select2_class_doctor" id="doctor" name="doctor" >--}}
-                                        {{--</select>--}}
                                     </div>
 
 

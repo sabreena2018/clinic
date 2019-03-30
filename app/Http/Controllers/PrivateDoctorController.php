@@ -10,11 +10,13 @@ use App\Models\Auth\Role;
 use App\Http\Controllers\Controller;
 use App\Events\Backend\Auth\Role\RoleDeleted;
 use App\Models\Auth\User;
+use App\PrivateDoctorRegistration;
 use App\Repositories\Backend\Auth\RoleRepository;
 use App\Repositories\Backend\Auth\PermissionRepository;
 use App\Http\Requests\Backend\Auth\Role\StoreRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\ManageRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\UpdateRoleRequest;
+use App\Reservations;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -32,6 +34,49 @@ class PrivateDoctorController extends Controller
      *
      * @return mixed
      */
+
+
+    public function indexRegistration(Request $request)
+    {
+
+        $specialtiesF = $request->get('specialtiesF');
+        $doctorF = $request->get('doctorF');
+        $dateF = $request->get('dateF');
+        $TperiodF = $request->get('TperiodF');
+        $cityF = $request->get('cityF');
+        $service_locationF = $request->get('service_locationF');
+
+
+        $privateDoctors= PrivateDoctorRegistration::query()
+            ->where('user_id',\Auth::user()->id)
+            ->when($doctorF,function ($q) use ($doctorF){
+                return $q->where('doctor_id',$doctorF);
+            })
+            ->when($dateF,function ($q) use ($dateF){
+                return $q->where('lab_id',$dateF);
+            })
+            ->when($TperiodF,function ($q) use ($TperiodF){
+                return $q->where('Tperiod',$TperiodF);
+            })
+            ->when($cityF,function ($q) use ($cityF){
+                return $q->where('city',$cityF);
+            })
+            ->when($service_locationF,function ($q) use ($service_locationF){
+                return $q->where('serviceL',$service_locationF);
+            })
+
+            ->orderBy('id', 'asc')
+            ->paginate(25);
+
+
+        if ($request->get('view', false)) {
+            return view('private-doctor.partial.table-registration', compact('privateDoctors'));
+        }
+        return view('private-doctor.index', compact('privateDoctors'));
+
+    }
+
+
     public function index(ClinicRequest $request)
     {
 
@@ -95,6 +140,32 @@ class PrivateDoctorController extends Controller
     {
         $db = DB::select("select id,first_name,last_name from users where id in (select user_id from user_specialties where specialties_id= {$request->specialties_id})");
         return $db;
+
+    }
+
+    public function storePrivateDoctorReg(PrivateDoctorRequest $request)
+    {
+
+
+        $res = Reservations::create([
+            'type' => 'private-doctor',
+            'status' => 'require-time',
+            'user_id' => \Auth::user()->id,
+            'appointment' => $request->get('date'),
+        ]);
+
+        PrivateDoctorRegistration::create([
+            'reservation_id' => $res->id,
+            'doctor_id' => $request->doctor,
+            'Tperiod' => $request->Tperiod,
+            'user_id' => \Auth::user()->id,
+            'city' => $request->city,
+            'serviceL' => $request->service_location,
+            'time' => '',
+        ]);
+
+        return redirect()->route('admin.registration.show', ['type' => 'private-doctor'])->withFlashSuccess('The lab was successfully saved.');
+
 
     }
 

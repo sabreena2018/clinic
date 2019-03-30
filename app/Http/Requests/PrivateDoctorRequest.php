@@ -29,7 +29,6 @@ class PrivateDoctorRequest extends FormRequest
         $rules = [];
         if(!$this->isMethod('GET')){
             $rules = [
-                'specialties' => 'required|array',
             ];
         }
         return $rules;

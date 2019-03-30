@@ -182,6 +182,9 @@ Route::group(['middleware' => 'redirect_if_private'], function () {
     Route::get('private-doctor', 'Auth\Role\PrivateDoctorController@index')
         ->name('private-doctor.index');
 
+    Route::get('private-doctorindexRegistration', 'Auth\Role\PrivateDoctorController@indexRegistration')
+        ->name('private-doctor.indexRegistration');
+
     Route::group(['prefix' => 'private-doctor/{privatedoctor}'], function () {
         Route::get('edit', 'Auth\Role\PrivateDoctorController@edit')->name('private-doctor.edit');
         Route::get('show', 'Auth\Role\PrivateDoctorController@show')->name('private-doctor.show');

@@ -8,6 +8,7 @@ use App\Models\Auth\Lab;
 use App\Models\Auth\Role;
 use App\Http\Controllers\Controller;
 use App\Events\Backend\Auth\Role\RoleDeleted;
+use App\PrivateDoctorRegistration;
 use App\Repositories\Backend\Auth\RoleRepository;
 use App\Http\Requests\Backend\Auth\Role\ClinicRequest;
 use App\Repositories\Backend\Auth\PermissionRepository;
@@ -92,6 +93,11 @@ class ReservationController extends Controller
             $clinic = ClinicUser::find($request->reservation_id);
             $clinic->time = $request->time;
             $clinic->save();
+        }
+        elseif ($request->type == 'private-doctor'){
+            $privateDoctor = PrivateDoctorRegistration::find($request->reservation_id);
+            $privateDoctor->time = $request->time;
+            $privateDoctor->save();
         }
 
         $res = Reservations::find($request->reservation_id);
