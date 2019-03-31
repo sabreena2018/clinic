@@ -19,6 +19,7 @@ class CreatePrivateDoctorRegistrationsTable extends Migration
             $table->unsignedInteger('doctor_id');
             $table->unsignedInteger('user_id');
             $table->String('Tperiod');
+            $table->date('appointment');
             $table->String('city');
             $table->String('serviceL');
             $table->time('time')->nullable();

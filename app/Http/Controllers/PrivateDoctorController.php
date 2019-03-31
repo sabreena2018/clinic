@@ -53,7 +53,7 @@ class PrivateDoctorController extends Controller
                 return $q->where('doctor_id',$doctorF);
             })
             ->when($dateF,function ($q) use ($dateF){
-                return $q->where('lab_id',$dateF);
+                return $q->where('appointment',$dateF);
             })
             ->when($TperiodF,function ($q) use ($TperiodF){
                 return $q->where('Tperiod',$TperiodF);
@@ -159,6 +159,7 @@ class PrivateDoctorController extends Controller
             'doctor_id' => $request->doctor,
             'Tperiod' => $request->Tperiod,
             'user_id' => \Auth::user()->id,
+            'appointment' => $request->get('date'),
             'city' => $request->city,
             'serviceL' => $request->service_location,
             'time' => '',
