@@ -198,6 +198,8 @@ Route::group(['middleware' => 'redirect_if_private'], function () {
 
 Route::get('nurse/{nurse}/create', 'Auth\Role\NurseController@create')->name('nurse.create');
 Route::post('nurse/{nurse}', 'Auth\Role\NurseController@store')->name('nurse.store');
+Route::post('nurseStoreReg', 'Auth\Role\NurseController@nurseStoreReg')->name('nurse.storeReg');
+Route::get('nurseIndexRegistration', 'Auth\Role\NurseController@nurseIndexRegistration')->name('nurse.IndexRegistration');
 
 Route::group(['middleware' => 'redirect_if_private'], function () {
     Route::get('nurse', 'Auth\Role\NurseController@index')->name('nurse.index');

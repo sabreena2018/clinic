@@ -26,13 +26,6 @@ class GeneralMethods
         return $map;
     }
 
-    public function getDoctorsWithSpecialties($specialties_id)
-    {
-//        $doctors = DB::select('select * from user_specialties where specialties_id= :id',['id' => $specialties_id]);
-//        logger($doctors);
-//        dd(1);
-    }
-
 
     public function getAllClinics()
     {

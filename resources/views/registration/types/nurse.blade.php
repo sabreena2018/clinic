@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-md-5">
                     <h4 class="card-title mb-0">
-                        Lab Registration
+                        Nurse Registration
                     </h4>
                 </div>
             </div>
@@ -24,33 +24,37 @@
                         </div>
 
                         <div class="card-body">
-                            {{ html()->form('POST', route('admin.lab.storeReg'))->class('form-horizontal')->open() }}
+                            {{ html()->form('POST', route('admin.nurse.storeReg'))->class('form-horizontal')->open() }}
                             <div  class="card-body">
 
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <div>Lab</div>
-                                        {!! Form::select('labs', app(\App\Methods\GeneralMethods::class)->getAllLabs(), null, ['id' => 'labs', 'class' => 'form-control select2_class_doctor']); !!}
+                                        <div>Nurse</div>
+                                        {!! Form::select('nurse', app(\App\Methods\GeneralMethods::class)->getAllNurses(), null, ['id' => 'nurse', 'class' => 'form-control select2_class_doctor']); !!}
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label> Choose appointment</label>
-                                        <input class="form-control" id="date" name="date" placeholder="MM-DD-YYY" type="text" autocomplete="off"/>
-
+                                        <label> Choose appointment From</label>
+                                        <input class="form-control" id="dateFrom" name="dateFrom" placeholder="MM-DD-YYY" type="text" autocomplete="off"/>
                                     </div>
-
 
                                     <div class="col-md-4">
-                                        <label for="Tperiod">Time Period</label>
-                                        {!! Form::select('Tperiod', ['' => 'None','morning' => 'Morning', 'evening' => 'Evening'], null, ['id' => 'Tperiod','class' => 'form-control select2_class_service_location']); !!}
+                                        <label> To </label>
+                                        <input class="form-control" id="dateTo" name="dateTo" placeholder="MM-DD-YYY" type="text" autocomplete="off"/>
                                     </div>
 
-
+                                    <div class="col-md-3">
+                                        <div>City</div>
+                                        {!!  html()->text('city')
+                                            ->id('city')
+                                            ->class('form-control')
+                                            ->placeholder('City')
+                                            ->autofocus()  !!}
+                                    </div>
 
                                 </div>
 
 
-                                {{--<button class="btn btn-primary mb-1" type="button" data-toggle="modal" data-target="#clinicModal">Reserve Appointment</button>--}}
                                 <br>
                                 <div class="row">
                                     <div class="col text-right">
@@ -77,7 +81,7 @@
 
         <div class="card">
             <div class="card-body">
-                @include('lab.lab_listing_with_filters')
+                @include('nurse.nurse_listing_with_filters')
             </div>
         </div>
 
@@ -99,7 +103,7 @@
 
             <script>
                 $(document).ready(function(){
-                    var date_input=$('input[name="date"]'); //our date input has the name "date"
+                    var date_input=$('input[name^="date"]'); //our date input has the name "date"
                     var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
                     var options={
                         format: 'yyyy-mm-dd',
@@ -122,5 +126,7 @@
 
 
 @endsection
+
+    </div>
 
 

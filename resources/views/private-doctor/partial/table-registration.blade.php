@@ -17,7 +17,6 @@
                 <tbody>
                 @foreach($privateDoctors as $privateDoctor)
                     <tr>
-                        {{logger($privateDoctor)}}
                         @php
                          $doctor = \App\Models\Auth\User::find($privateDoctor->doctor_id)
                          @endphp
@@ -75,3 +74,4 @@
         </div>
     </div><!--col-->
 </div><!--row-->
+</div>
