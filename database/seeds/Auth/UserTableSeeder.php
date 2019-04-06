@@ -42,7 +42,7 @@ class UserTableSeeder extends Seeder
         ]);
 
         User::create([
-            'first_name' => 'Patient',
+            'first_name' => 'Client',
             'last_name' => 'Samer',
             'email' => 'patient@gmail.com',
             'password' => 'secret',

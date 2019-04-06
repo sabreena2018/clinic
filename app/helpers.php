@@ -236,6 +236,15 @@ function isPatient()
     return $user->type == 'patient';
 }
 
+function isNotPatient()
+{
+    $user = \Auth::user();
+    if ($user->type == 'patient') {
+        return false;
+    }
+    return true;
+}
+
 
 function isCurrentUser($id)
 {
