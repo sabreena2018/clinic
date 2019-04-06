@@ -139,7 +139,8 @@
         </div>
     </div>
 
-    <script type="application/javascript">
+
+        <script type="application/javascript">
 
         let body = $('body');
 
@@ -181,8 +182,6 @@
                     date_input.datepicker(options);
                 })
             </script>
-
-
 
         {{--<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>--}}
         <!-- Bootstrap Date-Picker Plugin -->
@@ -252,3 +251,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.3/daterangepicker.min.js"></script>
 @endpush
+
+    </div>

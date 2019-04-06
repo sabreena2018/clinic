@@ -133,7 +133,7 @@ class ReservationController extends Controller
         }
 
         $res = Reservations::find($request->reservation_id);
-        $res->status = 'approved';
+        $res->status = 'require-confirm';
         $res->save();
 
     }

@@ -61,6 +61,10 @@
                         <td>{{ $clinic->serviceL }}</td>
                         {{--<td>{!! $clinic->approved ? badges(['YES']): badges(['NO'], 'danger')!!}</td>--}}
                         <td>
+
+
+
+
                             @php
                                 if ((\App\Reservations::find($clinic->reservation_id)->status) == 'waiting-choose'){
                                         echo $clinic->action_buttons;
@@ -68,18 +72,60 @@
                                 elseif((\App\Reservations::find($clinic->reservation_id)->status) == 'require-time'){
                                         echo '<a class="btn btn-warning"><i title="require-time"></i>Waiting</a>';
                                 }
-                                elseif ((\App\Reservations::find($clinic->reservation_id)->status) == 'approved'){
-                                    echo '<a class="btn btn-danger"><i title="approved"></i>Approved</a>';
+                                elseif ((\App\Reservations::find($clinic->reservation_id)->status) == 'require-confirm'){
+                                    //echo '<a class="btn btn-danger"><i title="approved"></i>Approved</a>';
+                                    echo '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                            Confirm
+                                        </button>';
                                 }
+                            elseif((\App\Reservations::find($clinic->reservation_id)->status) == 'confirmed'){
+                                        echo '<a class="btn btn-danger"><i title="require-time"></i>Confirmed</a>';
+                                }
+
                             @endphp
                         </td>
                     </tr>
                 @endforeach
                 </tbody>
+
+                <!-- Button trigger modal -->
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to confirm ?</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                You have to Enter your payment information below
+
+                                <form>
+                                    <div class="form-group">
+                                        <label for="payment_id" class="col-form-label">Visa Card Code :</label>
+                                        <input type="text" class="form-control" id="payment_id">
+                                    </div>
+                                </form>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="button_close" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" id="confirm_payment" class="btn btn-primary">Confirm payment</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </table>
         </div>
     </div>
 </div>
+
+
 <div class="row">
     <div class="col-7">
         <div class="float-left">
@@ -92,3 +138,41 @@
         </div>
     </div>
 </div>
+
+
+<script>
+
+
+    body.on('click', '#confirm_payment', function (e) {
+        e.preventDefault();
+
+        if ($('#payment_id').val() != ""){
+            $('#button_close').trigger('click');
+        }
+        else {
+            window.alert("require payment information")
+        }
+
+        
+        {{--$.ajax({--}}
+            {{--type: "GET",--}}
+            {{--url: "{{route('admin.nurse.IndexRegistration')}}?view=true",--}}
+            {{--data: {--}}
+                {{--nurseF: $("#nurseF").val(),--}}
+            {{--},--}}
+            {{--success: function (result) {--}}
+                {{--$('.load-table').html(result);--}}
+                {{--intDeleteButton();--}}
+            {{--},--}}
+            {{--error: function (result) {--}}
+            {{--}--}}
+        {{--});--}}
+    });
+
+</script>
+
+
+
+
+
+
