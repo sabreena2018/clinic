@@ -56,13 +56,14 @@
 
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <div>Doctors</div>
-                                            {!! Form::select('doctors', app(\App\Methods\GeneralMethods::class)->getAllDoctors(), null, ['id' => 'doctors', 'class' => 'form-control select2_class_doctor']); !!}
-                                        </div>
-
-                                        <div class="col-md-3">
                                             <div>Clinics</div>
                                             {!! Form::select('clinics', app(\App\Methods\GeneralMethods::class)->getAllClinics(), null, ['id' => 'clinics','class' => 'form-control select2_class_clinic']); !!}
+                                        </div>
+
+
+                                        <div class="col-md-3">
+                                            <div>Doctors</div>
+                                            {!! Form::select('doctors', app(\App\Methods\GeneralMethods::class)->getAllDoctors(), null, ['id' => 'doctors', 'class' => 'form-control select2_class_doctor']); !!}
                                         </div>
 
                                         <div class="col-md-3">

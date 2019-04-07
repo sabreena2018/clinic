@@ -74,7 +74,7 @@
                                 }
                                 elseif ((\App\Reservations::find($clinic->reservation_id)->status) == 'require-confirm'){
                                     //echo '<a class="btn btn-danger"><i title="approved"></i>Approved</a>';
-                                    echo '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                    echo '<button type="button" name="'.$clinic->reservation_id.'" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="ConfirmButton">
                                             Confirm
                                         </button>';
                                 }
@@ -142,31 +142,45 @@
 
 <script>
 
+    var reservation_id;
+
+    body.on('click', '#ConfirmButton', function (e) {
+        e.preventDefault();
+        window.alert($('#ConfirmButton').attr("name"));
+        reservation_id = $('#ConfirmButton').attr("name");
+    });
+
+
 
     body.on('click', '#confirm_payment', function (e) {
         e.preventDefault();
 
         if ($('#payment_id').val() != ""){
-            $('#button_close').trigger('click');
+
+            $.ajax({
+                type: "GET",
+                url: "{{route('admin.reservation.confirmReservation')}}?view=true",
+                data: {
+                    reservation_id : reservation_id,
+                },
+                success: function (result) {
+                    $('#button_close').trigger('click');
+                    location.reload();
+                    intDeleteButton();
+                },
+                error: function (result) {
+                    window.alert("error");
+                }
+            });
+
+
         }
         else {
-            window.alert("require payment information")
+            window.alert("require payment information or incorrect information")
         }
 
         
-        {{--$.ajax({--}}
-            {{--type: "GET",--}}
-            {{--url: "{{route('admin.nurse.IndexRegistration')}}?view=true",--}}
-            {{--data: {--}}
-                {{--nurseF: $("#nurseF").val(),--}}
-            {{--},--}}
-            {{--success: function (result) {--}}
-                {{--$('.load-table').html(result);--}}
-                {{--intDeleteButton();--}}
-            {{--},--}}
-            {{--error: function (result) {--}}
-            {{--}--}}
-        {{--});--}}
+
     });
 
 </script>

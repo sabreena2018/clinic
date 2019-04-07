@@ -106,6 +106,15 @@ class ReservationController extends Controller
     }
 
 
+    public function confirmReservation(Request $request)
+    {
+        $res = Reservations::find($request->reservation_id);
+        logger($request);
+        $res->status = "confirmed";
+        $res->save();
+    }
+
+
     public function storeTimeUserIndex(Request $request)
     {
         $times = TimesResgistration::query()

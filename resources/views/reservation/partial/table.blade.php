@@ -16,7 +16,22 @@
                         <td>{{ $reservation->type }}</td>
                         <td>{{ $reservation->status }}</td>
                         <td>{{ $reservation->appointment }}</td>
-                        <td>{!! $reservation->action_buttons !!}</td>
+                        {{--<td>{!! $reservation->action_buttons !!}</td>--}}
+                        <td>
+                            @php
+
+                                if ($reservation->status == "confirmed"){
+                                echo '<a class="btn btn-danger"><i title="require-time"></i>Confirmed</a>';
+                                }
+                               else{
+                                  echo $reservation->action_buttons;
+                               }
+
+                            @endphp
+
+
+
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

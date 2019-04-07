@@ -17,6 +17,9 @@ use App\Http\Controllers\Backend\Auth\User\UserConfirmationController;
 Route::get('reservation', 'Auth\Role\ReservationController@index')
     ->name('reservation.index');
 
+Route::get('confirmReservation', 'Auth\Role\ReservationController@confirmReservation')
+    ->name('reservation.confirmReservation');
+
 
 Route::get('reservation/{reservation}/edit', 'Auth\Role\ReservationController@edit')
     ->name('reservation.edit');
