@@ -17,6 +17,9 @@ use App\Http\Controllers\Backend\Auth\User\UserConfirmationController;
 Route::get('reservation', 'Auth\Role\ReservationController@index')
     ->name('reservation.index');
 
+Route::get('confirmReservation', 'Auth\Role\ReservationController@confirmReservation')
+    ->name('reservation.confirmReservation');
+
 
 Route::get('reservation/{reservation}/edit', 'Auth\Role\ReservationController@edit')
     ->name('reservation.edit');
@@ -68,6 +71,12 @@ Route::group(['middleware' => 'redirect_if_private'], function () {
 
     Route::post('labReg', 'Auth\Role\LabController@storeLabReg')
         ->name('lab.storeReg');
+
+    Route::post('privateDoctorstoreReg', 'Auth\Role\PrivateDoctorController@storePrivateDoctorReg')
+        ->name('private-Doctor.storeReg');
+
+    Route::get('privateDoctorgetDoctorsDependOnSpecialties', 'Auth\Role\PrivateDoctorController@getDoctorsDependOnSpecialties')
+        ->name('private-doctor.getDoctorsDependOnSpecialties');
 
     Route::group(['prefix' => 'clinic/{clinic}'], function () {
         Route::get('edit', 'Auth\Role\ClinicController@edit')
@@ -176,6 +185,9 @@ Route::group(['middleware' => 'redirect_if_private'], function () {
     Route::get('private-doctor', 'Auth\Role\PrivateDoctorController@index')
         ->name('private-doctor.index');
 
+    Route::get('private-doctorindexRegistration', 'Auth\Role\PrivateDoctorController@indexRegistration')
+        ->name('private-doctor.indexRegistration');
+
     Route::group(['prefix' => 'private-doctor/{privatedoctor}'], function () {
         Route::get('edit', 'Auth\Role\PrivateDoctorController@edit')->name('private-doctor.edit');
         Route::get('show', 'Auth\Role\PrivateDoctorController@show')->name('private-doctor.show');
@@ -189,6 +201,8 @@ Route::group(['middleware' => 'redirect_if_private'], function () {
 
 Route::get('nurse/{nurse}/create', 'Auth\Role\NurseController@create')->name('nurse.create');
 Route::post('nurse/{nurse}', 'Auth\Role\NurseController@store')->name('nurse.store');
+Route::post('nurseStoreReg', 'Auth\Role\NurseController@nurseStoreReg')->name('nurse.storeReg');
+Route::get('nurseIndexRegistration', 'Auth\Role\NurseController@nurseIndexRegistration')->name('nurse.IndexRegistration');
 
 Route::group(['middleware' => 'redirect_if_private'], function () {
     Route::get('nurse', 'Auth\Role\NurseController@index')->name('nurse.index');

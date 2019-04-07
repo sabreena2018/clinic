@@ -11,6 +11,7 @@ use App\Models\Auth\Nurse;
 use App\Models\Auth\PrivateDoctor;
 use App\Models\Auth\Specialties;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class GeneralMethods
 {
@@ -105,5 +106,8 @@ class GeneralMethods
         }
         return $map;
     }
+
+
+
 
 }

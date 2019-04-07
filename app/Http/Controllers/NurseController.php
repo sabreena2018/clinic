@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Auth\Role;
 
+use App\Helpers\Auth\Auth;
 use App\Http\Requests\Backend\Auth\Role\ClinicRequest;
 use App\Http\Requests\Backend\Auth\Role\NurseRequest;
 use App\Models\Auth\Clinic;
@@ -10,11 +11,13 @@ use App\Models\Auth\Role;
 use App\Http\Controllers\Controller;
 use App\Events\Backend\Auth\Role\RoleDeleted;
 use App\Models\Auth\User;
+use App\NurseRegistration;
 use App\Repositories\Backend\Auth\RoleRepository;
 use App\Repositories\Backend\Auth\PermissionRepository;
 use App\Http\Requests\Backend\Auth\Role\StoreRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\ManageRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\UpdateRoleRequest;
+use App\Reservations;
 use Illuminate\Http\Request;
 
 /**
@@ -25,6 +28,45 @@ class NurseController extends Controller
     public function __construct()
     {
     }
+
+
+    public function nurseIndexRegistration(Request $request)
+    {
+        $nurseF = $request->get('nurseF');
+        $dateFromF = $request->get('dateFromF');
+        $dateToF = $request->get('dateToF');
+        $cityF = $request->get('cityF');
+
+
+        $nurseRegs = NurseRegistration::query()
+            ->where('user_id',\Auth::user()->id)
+            ->when($nurseF,function ($q) use ($nurseF){
+                    return $q->where('nurse_id',$nurseF);
+            })
+            ->when($dateFromF,function ($q) use ($dateFromF){
+                return $q->where('appointmentFrom',$dateFromF);
+            })
+            ->when($dateToF,function ($q) use ($dateToF){
+                return $q->where('appointmentTo',$dateToF);
+            })
+            ->when($cityF,function ($q) use ($cityF){
+                return $q->where('city',$cityF);
+            })
+            ->orderBy('id', 'asc')
+            ->paginate(25);
+
+
+
+        if ($request->get('view', false)) {
+            return view('nurse.partial.tableReg', compact('nurseRegs'));
+        }
+        return view('nurse.index', compact('nurseReg'));
+
+
+    }
+
+
+
 
     public function index(ClinicRequest $request)
     {
@@ -83,6 +125,32 @@ class NurseController extends Controller
     {
         return view('nurse.show', compact('nurse'));
     }
+
+
+    public function nurseStoreReg(Request $request)
+    {
+        $res = Reservations::create([
+            'type' => 'nurse',
+            'status' => 'require-time',
+            'user_id' => \Auth::user()->id,
+            'appointment' => $request->get('dateFrom'),
+        ]);
+
+        NurseRegistration::create([
+
+            'reservation_id' => $res->id,
+            'nurse_id' => $request->get('nurse'),
+            'user_id' => \Auth::user()->id,
+            'appointmentFrom' => $request->get('dateFrom'),
+            'appointmentTo' => $request->get('dateTo'),
+            'city' => $request->get('city'),
+
+        ]);
+
+        return redirect()->route('admin.registration.show', ['type' => 'nurse'])->withFlashSuccess('The lab was successfully saved.');
+
+    }
+
 
     public function store(NurseRequest $request, $nurse)
     {

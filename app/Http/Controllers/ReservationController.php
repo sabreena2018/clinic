@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Backend\Auth\Role;
 
 use App\LabRegistration;
+use App\Models\Auth\Clinic;
 use App\Models\Auth\ClinicUser;
 use App\Models\Auth\Lab;
 use App\Models\Auth\Role;
 use App\Http\Controllers\Controller;
 use App\Events\Backend\Auth\Role\RoleDeleted;
+use App\PrivateDoctorRegistration;
 use App\Repositories\Backend\Auth\RoleRepository;
 use App\Http\Requests\Backend\Auth\Role\ClinicRequest;
 use App\Repositories\Backend\Auth\PermissionRepository;
@@ -30,7 +32,41 @@ class ReservationController extends Controller
      */
     public function index(Request $request)
     {
-        $reservations = Reservations::orderBy('status', 'asc')
+        $user_id = \Auth::user()->id;
+        $type = \Auth::user()->type;
+        $resObj = null;
+
+
+        switch ($type) {
+            case "admin":
+                $type="";
+                break;
+            case "owner":
+                $type = "clinic";
+                $resObj = Clinic::query()->where('owner_id',$user_id)->pluck('id')->toArray();
+                break;
+            case
+                $type = "doctor";
+                $resObj = user_id;
+        }
+
+        $reservations = Reservations::query()
+            ->when($type,function ($q) use ($type){
+                return $q->where('type',$type);
+            })
+            ->when($type,function ($q) use ($type,$resObj){
+                if ($type = "clinic"){
+                    $res_id = ClinicUser::query()
+                        ->whereIn('clinic_id',$resObj)
+                        ->pluck('reservation_id')->toArray();
+                }
+                if (isAdmin()){
+                    return $q;
+                }
+
+                return $q->whereIn('id',$res_id);
+            })
+            ->orderBy('status', 'asc')
             ->paginate(25);
 
         if ($request->get('view', false)) {
@@ -70,6 +106,15 @@ class ReservationController extends Controller
     }
 
 
+    public function confirmReservation(Request $request)
+    {
+        $res = Reservations::find($request->reservation_id);
+        logger($request);
+        $res->status = "confirmed";
+        $res->save();
+    }
+
+
     public function storeTimeUserIndex(Request $request)
     {
         $times = TimesResgistration::query()
@@ -84,18 +129,20 @@ class ReservationController extends Controller
     {
 
         if ($request->type == 'lab'){
-            $lab = LabRegistration::find($request->reservation_id);
-            $lab->time = $request->time;
-            $lab->save();
+            LabRegistration::query()->where('reservation_id',$request->reservation_id)
+                ->update(['time'=>$request->time]);
         }
         elseif ($request->type == 'clinic'){
-            $clinic = ClinicUser::find($request->reservation_id);
-            $clinic->time = $request->time;
-            $clinic->save();
+            ClinicUser::query()->where('reservation_id',$request->reservation_id)
+            ->update(['time'=>$request->time]);
+        }
+        elseif ($request->type == 'private-doctor'){
+            PrivateDoctorRegistration::query()->where('reservation_id',$request->reservation_id)
+                ->update(['time'=>$request->time]);
         }
 
         $res = Reservations::find($request->reservation_id);
-        $res->status = 'approved';
+        $res->status = 'require-confirm';
         $res->save();
 
     }

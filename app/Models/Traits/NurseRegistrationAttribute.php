@@ -5,14 +5,14 @@ namespace App\Models\Traits;
 /**
  * Trait ClinicAttribute.
  */
-trait LabAttribute
+trait NurseRegistrationAttribute
 {
     /**
      * @return string
      */
     public function getEditButtonAttribute()
     {
-        return '<a href="' . route('admin.reservation.storeTimeUserIndex', ["id" => $this->reservation_id,'type' => 'lab']) . '" class="btn btn-primary"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.edit') . '"></i></a>';
+        return '<a href="' . route('admin.reservation.storeTimeUserIndex', ["id" => $this->reservation_id,'type' => 'private-doctor']) . '" class="btn btn-primary"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.edit') . '"></i></a>';
     }
 
     /**
