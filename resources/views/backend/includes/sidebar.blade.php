@@ -43,7 +43,7 @@
             @endif
 
 
-            @if(isNotPatient())
+            @if(isNotPatient() && !isAdmin())
 
 
                 <li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern('admin/clinic*'), 'open') }}">

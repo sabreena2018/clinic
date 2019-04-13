@@ -58,9 +58,7 @@
                                         ->placeholder('Time')
                                         ->id('time')
                                         ->autofocus() }}
-                                </div><!--col-->
-
-
+                                </div>
 
 
 
@@ -82,22 +80,22 @@
                         </div><!--card-body-->
 
 
-                        </div><!--col-->
-                    </div><!--row-->
-                </div><!--card-body-->
+                    </div><!--col-->
+                </div><!--row-->
+            </div><!--card-body-->
 
-                <div class="card-footer">
-                    <div class="row">
-                        <div class="col">
-                            {{ form_cancel(route('admin.reservation.index'), __('buttons.general.cancel')) }}
-                        </div><!--col-->
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col">
+                        {{ form_cancel(route('admin.reservation.index'), __('buttons.general.cancel')) }}
+                    </div><!--col-->
 
-                        <div class="col text-right">
-                            <button type="button" id="button_done" class="btn btn-warning">Done</button>
-                        </div><!--col-->
-                    </div><!--row-->
-                </div><!--card-footer-->
-            </div><!--card-->
+                    <div class="col text-right">
+                        <button type="button" id="button_done" class="btn btn-warning">Done</button>
+                    </div><!--col-->
+                </div><!--row-->
+            </div><!--card-footer-->
+        </div><!--card-->
 
 
         <script type="application/javascript">
@@ -112,15 +110,23 @@
                 let body = $('body');
 
                 body.on('click', '#button_insert', function (e) {
-                    var node = document.createElement("LI");
+                    var timeFormat = /^([0-9]{2})\:([0-9]{2})$/;
                     var time = document.getElementById('time');
+                    if (time.value === ""){
+                        window.alert("You must enter time");
+                    }
+                    else if(timeFormat.test(time.value) == false){
+                        window.alert("Time must be in this formate HH:MM | Example : 08:40");
+                    }
+                    else{
+                    var node = document.createElement("LI");
                     var textnode = document.createTextNode(time.value);
                     node.setAttribute('class','list-group-item active');
                     node.appendChild(textnode);
                     document.getElementById("mylist").appendChild(node);
                     listitems.push(time.value);
                     time.value = "";
-
+                    }
                 });
 
 
@@ -161,10 +167,7 @@
         @endsection
 
 
-        @push('after-styles')
-
-
-
+        @push('after-styles')1
             <style>
                 .select2-container {
                     width: 100% !important;
