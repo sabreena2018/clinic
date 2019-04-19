@@ -75,8 +75,11 @@
                                 elseif ((\App\Reservations::find($clinic->reservation_id)->status) == 'require-confirm'){
                                     //echo '<a class="btn btn-danger"><i title="approved"></i>Approved</a>';
                                     echo '<button type="button" onclick="myFunction('.$clinic->reservation_id.')" name="'.$clinic->reservation_id.'" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="ConfirmButton">
-                                            Confirm
+                                            Confirm Payment
                                         </button>';
+                                }
+                                elseif ((\App\Reservations::find($clinic->reservation_id)->status) == 'require-confirm-owner'){
+                                   echo '<a class="btn btn-warning"><i title="require-time"></i>Waiting Clinic Confirm</a>';
                                 }
                             elseif((\App\Reservations::find($clinic->reservation_id)->status) == 'confirmed'){
                                         echo '<a class="btn btn-danger"><i title="require-time"></i>Confirmed</a>';

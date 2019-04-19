@@ -109,9 +109,17 @@ class ReservationController extends Controller
     public function confirmReservation(Request $request)
     {
         $res = Reservations::find($request->reservation_id);
-        logger($request);
+        $res->status = "require-confirm-owner";
+        $res->save();
+    }
+
+    public function confirmPaymentOwner(Request $request)
+    {
+        logger($request->reservation_id);
+        $res = Reservations::find($request->reservation_id);
         $res->status = "confirmed";
         $res->save();
+        return view('reservation.index');
     }
 
 

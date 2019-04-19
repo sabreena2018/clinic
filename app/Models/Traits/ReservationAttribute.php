@@ -44,7 +44,7 @@ trait ReservationAttribute
      */
     public function getApproveButtonAttribute()
     {
-        return '<a href="' . route('admin.private-doctor.approve', $this) . '" data-toggle="tooltip" data-placement="top" title="' . 'Approve' . '" class="btn btn-success change_status_button"><i class="fa fa-check"></i></a>';
+        return '<a href="' . route('admin.reservation.confirmPaymentOwner', ['reservation_id' => $this->id]) . '" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.edit') . '" class="btn btn-warning change_status_button">Require confirm payment</a>';
     }
 
 
@@ -65,6 +65,10 @@ trait ReservationAttribute
         $state = '';
         if ($this->status == "require-time"){
             $state = $this->show_button;
+        }
+
+        else if ($this->status == "require-confirm-owner"){
+            $state = $this->approve_button;
         }
 
 //        if (isAdmin()) {

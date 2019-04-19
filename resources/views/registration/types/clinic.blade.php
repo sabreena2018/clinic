@@ -72,7 +72,7 @@
                                         </div>
 
                                         <div class="col-md-3">
-                                            <div>Location</div>
+                                            <div>Street</div>
                                             {!! Form::select('countries', app(\App\Methods\GeneralMethods::class)->getAllCountries(), null, ['id' => 'countries','class' => 'form-control select2_class_countries']); !!}
                                         </div>
 
