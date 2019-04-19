@@ -20,6 +20,8 @@ Route::get('reservation', 'Auth\Role\ReservationController@index')
 Route::get('confirmReservation', 'Auth\Role\ReservationController@confirmReservation')
     ->name('reservation.confirmReservation');
 
+Route::get('confirmPaymentOwner', 'Auth\Role\ReservationController@confirmPaymentOwner')
+    ->name('reservation.confirmPaymentOwner');
 
 Route::get('reservation/{reservation}/edit', 'Auth\Role\ReservationController@edit')
     ->name('reservation.edit');
