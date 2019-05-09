@@ -66,24 +66,39 @@
 
 
                             @php
+                            $actionButton = "";
                                 if ((\App\Reservations::find($clinic->reservation_id)->status) == 'waiting-choose'){
-                                        echo $clinic->action_buttons;
+                                        $actionButton = $clinic->action_buttons;
                                 }
                                 elseif((\App\Reservations::find($clinic->reservation_id)->status) == 'require-time'){
-                                        echo '<a class="btn btn-warning"><i title="require-time"></i>Waiting</a>';
+                                        $actionButton = '<a class="btn btn-warning"><i title="require-time"></i>Waiting</a>';
+                                        $deleteButton2 = '<button type="button" id="destroy" onclick="destroy('.$clinic->reservation_id.')" class="btn btn-danger">
+                                         <i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.delete') . '"></i>
+                                         </button>';
+                                        $actionButton = $actionButton.$deleteButton2 ;
                                 }
                                 elseif ((\App\Reservations::find($clinic->reservation_id)->status) == 'require-confirm'){
                                     //echo '<a class="btn btn-danger"><i title="approved"></i>Approved</a>';
-                                    echo '<button type="button" onclick="myFunction('.$clinic->reservation_id.')" name="'.$clinic->reservation_id.'" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="ConfirmButton">
-                                            Confirm Payment
+                                    $actionButton = '<button type="button" onclick="myFunction('.$clinic->reservation_id.')" name="'.$clinic->reservation_id.'" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="ConfirmButton">
+                                            Confirm reservation
                                         </button>';
                                 }
                                 elseif ((\App\Reservations::find($clinic->reservation_id)->status) == 'require-confirm-owner'){
-                                   echo '<a class="btn btn-warning"><i title="require-time"></i>Waiting Clinic Confirm</a>';
+                                   $actionButton =  '<a class="btn btn-warning"><i title="require-time"></i>Waiting Clinic Confirm</a>';
                                 }
-                            elseif((\App\Reservations::find($clinic->reservation_id)->status) == 'confirmed'){
-                                        echo '<a class="btn btn-danger"><i title="require-time"></i>Confirmed</a>';
+                            elseif((\App\Reservations::find($clinic->reservation_id)->status) == 'confirm-treatment'){
+                                        $actionButton =  '<a class="btn btn-danger"><i title="require-time"></i>Confirmed</a>';
                                 }
+
+
+                                $deleteButton = '<a href="' . route('admin.reservation.destroy', $clinic->reservation_id) . '"
+                                   data-method="delete"
+                                   data-trans-button-cancel="' . __('buttons.general.cancel') . '"
+                                   data-trans-button-confirm="' . __('buttons.general.crud.delete') . '"
+                                   data-trans-title="' . __('strings.backend.general.are_you_sure') . '"
+                                   class="btn btn-danger"><i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.delete') . '"></i></a> ';
+
+                            echo $actionButton;
 
                             @endphp
                         </td>
@@ -118,7 +133,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" id="button_close" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" id="confirm_payment" class="btn btn-primary">Confirm payment</button>
+                                <button type="button" id="confirm_payment" class="btn btn-primary">Confirm reservation</button>
                             </div>
                         </div>
                     </div>
@@ -145,11 +160,34 @@
 
 <script>
 
-    var reservation_id;
+    var reservation_id = 1;
 
     function myFunction(reservation_idpass) {
         reservation_id = reservation_idpass;
     }
+
+    function destroy(reservation_idpass) {
+        reservation_id = reservation_idpass;
+    }
+
+    body.on('click', '#destroy', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "{{route('admin.reservation.destroy')}}",
+            data: {
+                reservation_id : reservation_id,
+                _token: '{{csrf_token()}}',
+            },
+            success: function (result) {
+                location.reload();
+                intDeleteButton();
+            },
+            error: function (result) {
+                window.alert("error");
+            }
+        });
+    });
 
 
     body.on('click', '#confirm_payment', function (e) {

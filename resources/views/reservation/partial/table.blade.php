@@ -16,12 +16,11 @@
                         <td>{{ $reservation->type }}</td>
                         <td>{{ $reservation->status }}</td>
                         <td>{{ $reservation->appointment }}</td>
-                        {{--<td>{!! $reservation->action_buttons !!}</td>--}}
                         <td>
                             @php
 
-                                if ($reservation->status == "confirmed"){
-                                echo '<a class="btn btn-danger"><i title="require-time"></i>Confirmed</a>';
+                                if ($reservation->status == "confirm-treatment"){
+                                echo '<a class="btn btn-danger"><i title="require-time"></i>Confirm Treatment</a>';
                                 }
                                else{
                                   echo $reservation->action_buttons;

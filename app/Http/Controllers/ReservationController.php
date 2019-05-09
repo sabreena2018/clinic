@@ -9,6 +9,7 @@ use App\Models\Auth\Lab;
 use App\Models\Auth\Role;
 use App\Http\Controllers\Controller;
 use App\Events\Backend\Auth\Role\RoleDeleted;
+use App\NurseRegistration;
 use App\PrivateDoctorRegistration;
 use App\Repositories\Backend\Auth\RoleRepository;
 use App\Http\Requests\Backend\Auth\Role\ClinicRequest;
@@ -115,9 +116,8 @@ class ReservationController extends Controller
 
     public function confirmPaymentOwner(Request $request)
     {
-        logger($request->reservation_id);
         $res = Reservations::find($request->reservation_id);
-        $res->status = "confirmed";
+        $res->status = "confirm-treatment";
         $res->save();
         return view('reservation.index');
     }
@@ -148,12 +148,42 @@ class ReservationController extends Controller
             PrivateDoctorRegistration::query()->where('reservation_id',$request->reservation_id)
                 ->update(['time'=>$request->time]);
         }
+        elseif ($request->type == 'nurse'){
+            NurseRegistration::query()->where('reservation_id',$request->reservation_id)
+                ->update(['time'=>$request->time]);
+        }
 
         $res = Reservations::find($request->reservation_id);
         $res->status = 'require-confirm';
         $res->save();
 
     }
+
+    public function destroy(Request $request)
+    {
+        $type = Reservations::find($request->reservation_id)->type;
+
+        if ($type == 'lab'){
+            LabRegistration::query()->where('reservation_id',$request->reservation_id)
+                ->delete();
+        }
+        elseif ($type == 'clinic'){
+            ClinicUser::query()->where('reservation_id',$request->reservation_id)
+                ->delete();
+        }
+        elseif ($type == 'private-doctor'){
+            PrivateDoctorRegistration::query()->where('reservation_id',$request->reservation_id)
+                ->delete();
+        }
+        elseif ($type == 'nurse'){
+            NurseRegistration::query()->where('reservation_id',$request->reservation_id)
+                ->delete();
+        }
+
+        $res = Reservations::find($request->reservation_id);
+        $res->delete();
+    }
+
 
 
 
