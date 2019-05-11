@@ -44,7 +44,7 @@ trait ReservationAttribute
      */
     public function getApproveButtonAttribute()
     {
-        return '<a href="' . route('admin.reservation.confirmPaymentOwner', ['reservation_id' => $this->id]) . '" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.edit') . '" class="btn btn-warning change_status_button">Require confirm payment</a>';
+        return '<a href="' . route('admin.reservation.confirmPaymentOwner', ['reservation_id' => $this->id]) . '" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.edit') . '" class="btn btn-warning change_status_button">Require confirm reservation</a>';
     }
 
 

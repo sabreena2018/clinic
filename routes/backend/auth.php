@@ -17,6 +17,10 @@ use App\Http\Controllers\Backend\Auth\User\UserConfirmationController;
 Route::get('reservation', 'Auth\Role\ReservationController@index')
     ->name('reservation.index');
 
+
+Route::post('/deleteReservation', 'Auth\Role\ReservationController@destroy')
+    ->name('reservation.destroy');
+
 Route::get('confirmReservation', 'Auth\Role\ReservationController@confirmReservation')
     ->name('reservation.confirmReservation');
 
