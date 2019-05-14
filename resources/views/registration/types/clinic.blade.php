@@ -73,7 +73,12 @@
 
                                         <div class="col-md-3">
                                             <div>Street</div>
-                                            {!! Form::select('countries', app(\App\Methods\GeneralMethods::class)->getAllCountries(), null, ['id' => 'countries','class' => 'form-control select2_class_countries']); !!}
+                                            {{--{!! Form::select('countries', app(\App\Methods\GeneralMethods::class)->getAllCountries(), null, ['id' => 'countries','class' => 'form-control select2_class_countries']); !!}--}}
+                                            {!!  html()->text('countries')
+                                                ->id('countries')
+                                                ->class('form-control')
+                                                ->placeholder('Street')
+                                                ->autofocus() !!}
                                         </div>
 
 
@@ -83,12 +88,13 @@
                                                 ->id('city')
                                                 ->class('form-control')
                                                 ->placeholder('City')
-                                                ->autofocus()  !!}
+                                                  !!}
                                         </div>
 
                                         <div class="col-md-3">
                                             <label> Choose appointment</label>
                                             <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text" autocomplete="off"/>
+
 
                                         </div>
 

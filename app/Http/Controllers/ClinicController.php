@@ -131,7 +131,7 @@ class ClinicController extends Controller
             return $q->whereIn('specialties_id', $specialtiesFilter);
         })
         ->when($countriesFilter, function ($q) use ($countriesFilter) {
-            return $q->whereIn('country_id', $countriesFilter);
+            return $q->where('country_id', $countriesFilter);
         })
         ->when($cityFilter, function ($q) use ($cityFilter) {
             return $q->where('city', $cityFilter);
@@ -189,7 +189,7 @@ class ClinicController extends Controller
             'user_id' => \Auth::user()->id,
             'doctor_id'=> $request->get('doctors'),
             'specialties_id' => $request->get('specialties'),
-            'country_id' => $request->get('countries'),
+            'country' => $request->get('countries'),
             'city' => $request->get('city'),
             'appointment' => $request->get('date'),
             'Tperiod' => $request->get('Tperiod'),

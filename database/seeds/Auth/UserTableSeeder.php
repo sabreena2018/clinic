@@ -31,8 +31,8 @@ class UserTableSeeder extends Seeder
         ]);
 
         User::create([
-            'first_name' => 'Doctor',
-            'last_name' => 'Ali',
+            'first_name' => 'دكتور خالد',
+            'last_name' => 'حمدان',
             'email' => 'doctor@gmail.com',
             'password' => 'secret',
             'confirmation_code' => md5(uniqid(mt_rand(), true)),
@@ -42,8 +42,8 @@ class UserTableSeeder extends Seeder
         ]);
 
         User::create([
-            'first_name' => 'Client',
-            'last_name' => 'Samer',
+            'first_name' => 'احمد',
+            'last_name' => 'سامر',
             'email' => 'patient@gmail.com',
             'password' => 'secret',
             'confirmation_code' => md5(uniqid(mt_rand(), true)),
@@ -53,8 +53,8 @@ class UserTableSeeder extends Seeder
 
 
         User::create([
-            'first_name' => 'Clinic',
-            'last_name' => 'Owner',
+            'first_name' => 'عيادة',
+            'last_name' => 'الاقتصاد',
             'email' => 'owner@gmail.com',
             'password' => 'secret',
             'confirmation_code' => md5(uniqid(mt_rand(), true)),

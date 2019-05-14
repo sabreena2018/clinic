@@ -73,7 +73,6 @@ trait ClinicAttribute
 
 
         if ($status == 'require-time'){
-
             $delete = $this->delete_button;
             return '<a class="btn btn-warning"><i title="require-time"></i>Waiting</a>'
                 .$delete;

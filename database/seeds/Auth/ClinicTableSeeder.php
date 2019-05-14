@@ -20,20 +20,20 @@ class ClinicTableSeeder extends Seeder
         $this->disableForeignKeys();
 
         $first = \App\Models\Auth\Clinic::create([
-            'name' => 'first clinic',
+            'name' => 'ساوند كير للسمع و النطق',
             'approved' => true,
             'owner_id' => 4,
             'country_id' => 170,
-            'city' => 'Ramallah',
+            'city' => 'رام الله - البيرة',
             'service_location' => 'home',
         ]);
 
         $second = \App\Models\Auth\Clinic::create([
-            'name' => 'second clinic',
+            'name' => 'فلسطين للسمع و النطق',
             'approved' => true,
             'owner_id' => 4,
             'country_id' => 170,
-            'city' => 'Nablus',
+            'city' => 'الخليل',
             'service_location' => 'clinic',
 
 

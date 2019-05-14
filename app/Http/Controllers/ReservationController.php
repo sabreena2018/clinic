@@ -125,9 +125,9 @@ class ReservationController extends Controller
 
     public function storeTimeUserIndex(Request $request)
     {
+
         $times = TimesResgistration::query()
         ->where('reservation_id',$request->id)->get();
-
 
         return view('reservation.chooseTimeUser',compact('times'));
 

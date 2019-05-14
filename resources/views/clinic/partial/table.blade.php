@@ -40,13 +40,13 @@
                             $doctor = \App\Models\Auth\User::where('id','=',$clinic->doctor_id)->first()
                         @endphp
                         <td>{{ $doctor->first_name.' '.$doctor->last_name }}</td>
-                        <td>{{ \App\Models\Auth\Country::where('id','=',$clinic->country_id)->first()->name }}</td>
+                        <td>{{ $clinic->country }}</td>
                         <td>{{ $clinic->city }}</td>
                         <td>{{ $clinic->appointment }}</td>
                         <td>
 
                             @php
-                                if ((\App\Reservations::find($clinic->reservation_id)->status) == 'approved'){
+                                if ((\App\Reservations::find($clinic->reservation_id)->status) == 'confirm-treatment'){
                                         echo badges([$clinic->time]);
                                 }
                                 else{
@@ -72,16 +72,18 @@
                                 }
                                 elseif((\App\Reservations::find($clinic->reservation_id)->status) == 'require-time'){
                                         $actionButton = '<a class="btn btn-warning"><i title="require-time"></i>Waiting</a>';
-                                        $deleteButton2 = '<button type="button" id="destroy" onclick="destroy('.$clinic->reservation_id.')" class="btn btn-danger">
+                                        $deleteButton2 = '<button type="button" id="destroy" onclick="setResId('.$clinic->reservation_id.')" class="btn btn-danger">
                                          <i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.delete') . '"></i>
                                          </button>';
-                                        $actionButton = $actionButton.$deleteButton2 ;
+
+                                        $actionButton = $actionButton.$deleteButton2;
                                 }
                                 elseif ((\App\Reservations::find($clinic->reservation_id)->status) == 'require-confirm'){
-                                    //echo '<a class="btn btn-danger"><i title="approved"></i>Approved</a>';
+                               //     $edit = '<button type="button" id="edit" onclick="setResId('.$clinic->reservation_id.')" class="btn btn-danger"> Edit </button>';
+                                    $edit = '<a href="' . route('admin.reservation.storeTimeUserIndex', ["id" => $clinic->reservation_id,'type' => 'clinic']) . '" class="btn btn-primary"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.edit') . '"></i></a>';
                                     $actionButton = '<button type="button" onclick="myFunction('.$clinic->reservation_id.')" name="'.$clinic->reservation_id.'" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="ConfirmButton">
                                             Confirm reservation
-                                        </button>';
+                                        </button>'.$edit;
                                 }
                                 elseif ((\App\Reservations::find($clinic->reservation_id)->status) == 'require-confirm-owner'){
                                    $actionButton =  '<a class="btn btn-warning"><i title="require-time"></i>Waiting Clinic Confirm</a>';
@@ -166,9 +168,28 @@
         reservation_id = reservation_idpass;
     }
 
-    function destroy(reservation_idpass) {
+    function setResId(reservation_idpass) {
         reservation_id = reservation_idpass;
     }
+
+    {{--body.on('click', '#edit', function (e) {--}}
+        {{--e.preventDefault();--}}
+        {{--$.ajax({--}}
+            {{--type: "get",--}}
+            {{--url: "{{route('admin.reservation.storeTimeUserIndex')}}",--}}
+            {{--data: {--}}
+                {{--id : reservation_id,--}}
+                {{--_token: '{{csrf_token()}}',--}}
+            {{--},--}}
+            {{--success: function (result) {--}}
+                {{--// location.reload();--}}
+                {{--intDeleteButton();--}}
+            {{--},--}}
+            {{--error: function (result) {--}}
+                {{--window.alert("error");--}}
+            {{--}--}}
+        {{--});--}}
+    {{--});--}}
 
     body.on('click', '#destroy', function (e) {
         e.preventDefault();
