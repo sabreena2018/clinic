@@ -28,8 +28,13 @@
             </div>
 
             <div class="col-md-3">
-                <div>Countries</div>
-                {!! Form::select('countriesF[]', app(\App\Methods\GeneralMethods::class)->getAllCountries(), null, ['id' => 'countriesF','class' => 'form-control select2_class_countries', 'multiple' => 'multiple']); !!}
+                <div>Street</div>
+{{--                {!! Form::select('countriesF[]', app(\App\Methods\GeneralMethods::class)->getAllCountries(), null, ['id' => 'countriesF','class' => 'form-control select2_class_countries', 'multiple' => 'multiple']); !!}--}}
+                {!!  html()->text('countriesF')
+                     ->id('countriesF')
+                     ->class('form-control')
+                     ->placeholder('Street')
+                     ->autofocus()      !!}
             </div>
 
 

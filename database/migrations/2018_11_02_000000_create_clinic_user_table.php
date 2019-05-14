@@ -23,7 +23,7 @@ class CreateClinicUserTable extends Migration
             $table->unsignedInteger('user_id')->index();
             $table->unsignedInteger('doctor_id');
             $table->unsignedInteger('specialties_id');
-            $table->unsignedInteger('country_id');
+            $table->string('country');
             $table->string('city');
             $table->date('appointment');
             $table->time('time')->nullable();

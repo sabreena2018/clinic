@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-sm-5">
                     <h4 class="card-title mb-0">
-                         ASDSADSADASDASD
+                         Choose Time
                         <br>
                         <small class="text-muted">Insert available time</small>
                     </h4>
