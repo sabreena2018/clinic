@@ -67,29 +67,43 @@
 
                             @php
                             $actionButton = "";
-                                if ((\App\Reservations::find($clinic->reservation_id)->status) == 'waiting-choose'){
-                                        $actionButton = $clinic->action_buttons;
-                                }
-                                elseif((\App\Reservations::find($clinic->reservation_id)->status) == 'require-time'){
-                                        $actionButton = '<a class="btn btn-warning"><i title="require-time"></i>Waiting</a>';
-                                        $deleteButton2 = '<button type="button" id="destroy" onclick="setResId('.$clinic->reservation_id.')" class="btn btn-danger">
+                            $status = \App\Reservations::find($clinic->reservation_id)->status;
+                            $appointment = \App\Reservations::find($clinic->reservation_id)->appointment;
+
+                            $dateOfReservation = \Carbon\Carbon::parse($appointment);
+                            $dateNow = \Carbon\Carbon::now();
+                            $diff = $dateNow->gte($dateOfReservation);
+
+                            $deleteButton2 = "";
+                            $editButton = "";
+                            if ($diff != 1 || $status == 'waiting-choose'){
+                             $editButton = '<a href="' . route('admin.reservation.storeTimeUserIndex', ["id" => $clinic->reservation_id,'type' => 'clinic']) . '" class="btn btn-primary"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.edit') . '"></i></a>';
+                             $deleteButton2 = '<button type="button" id="destroy" onclick="setResId('.$clinic->reservation_id.')" class="btn btn-danger">
                                          <i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.delete') . '"></i>
                                          </button>';
+                             }
 
-                                        $actionButton = $actionButton.$deleteButton2;
+                                if ($status == 'waiting-choose'){
+                                        $actionButton = '<div class="btn-group btn-group-sm" role="group" aria-label="'.__('labels.backend.access.users.user_actions').'">
+                                                    '.
+                                                    $editButton.$deleteButton2.
+                                                    '</div>';
+
                                 }
-                                elseif ((\App\Reservations::find($clinic->reservation_id)->status) == 'require-confirm'){
-                               //     $edit = '<button type="button" id="edit" onclick="setResId('.$clinic->reservation_id.')" class="btn btn-danger"> Edit </button>';
-                                    $edit = '<a href="' . route('admin.reservation.storeTimeUserIndex', ["id" => $clinic->reservation_id,'type' => 'clinic']) . '" class="btn btn-primary"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.edit') . '"></i></a>';
+                                elseif($status == 'require-time'){
+                                        $actionButton = '<a class="btn btn-warning"><i title="require-time"></i>Waiting</a>';
+                                        $actionButton = $actionButton.$deleteButton2.$editButton;
+                                }
+                                elseif ($status == 'require-confirm'){
                                     $actionButton = '<button type="button" onclick="myFunction('.$clinic->reservation_id.')" name="'.$clinic->reservation_id.'" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="ConfirmButton">
                                             Confirm reservation
-                                        </button>'.$edit;
+                                        </button>'.$editButton.$deleteButton2;
                                 }
-                                elseif ((\App\Reservations::find($clinic->reservation_id)->status) == 'require-confirm-owner'){
-                                   $actionButton =  '<a class="btn btn-warning"><i title="require-time"></i>Waiting Clinic Confirm</a>';
+                                elseif ($status == 'require-confirm-owner'){
+                                   $actionButton =  '<a class="btn btn-warning"><i title="require-time"></i>Waiting Clinic Confirm</a>'.$editButton.$deleteButton2;
                                 }
-                            elseif((\App\Reservations::find($clinic->reservation_id)->status) == 'confirm-treatment'){
-                                        $actionButton =  '<a class="btn btn-danger"><i title="require-time"></i>Confirmed</a>';
+                            elseif($status == 'confirm-treatment'){
+                                        $actionButton =  '<a class="btn btn-danger"><i title="require-time"></i>Confirmed</a>'.$editButton.$deleteButton2;
                                 }
 
 
@@ -238,7 +252,7 @@
             window.alert("require payment information or incorrect information")
         }
 
-        
+
 
     });
 
