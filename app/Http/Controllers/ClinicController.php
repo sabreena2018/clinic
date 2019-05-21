@@ -100,7 +100,7 @@ class ClinicController extends Controller
             ->paginate(25);
 
         if ($request->get('view', false)) {
-            return view('clinic.partial.table', compact('clinics'));
+            return view('clinic.partial.tableIndex', compact('clinics'));
         }
         return view('clinic.index', compact('clinics'));
     }
