@@ -19,6 +19,7 @@ use App\Http\Requests\Backend\Auth\Role\ManageRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\UpdateRoleRequest;
 use App\Reservations;
 use App\TimesResgistration;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 /**
@@ -100,7 +101,7 @@ class ReservationController extends Controller
         foreach ($request->listitem as $item){
             TimesResgistration::create([
                 'reservation_id' => $request->reservation_id,
-                'time' => $item,
+                'time' => Carbon::parse($item),
             ]);
         }
 

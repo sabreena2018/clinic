@@ -50,7 +50,7 @@
                                         echo badges([$clinic->time]);
                                 }
                                 else{
-                                    echo badges(['NOT YET'],'danger');
+                                    echo badges([(\App\Reservations::find($clinic->reservation_id)->preferred_time)],'danger');
                                 }
                             @endphp
 
