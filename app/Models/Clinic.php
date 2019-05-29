@@ -13,15 +13,15 @@ use App\Models\Auth\Traits\Attribute\RoleAttribute;
  */
 class Clinic extends Model
 {
-    use ClinicScope;
+//    use ClinicScope;
     use ClinicAttribute;
 
     protected $table = 'clinics';
     protected $guarded = ['id'];
 
-    protected $attributes = [
-        'facility_id' => 9
-    ];
+//    protected $attributes = [
+////        'facility_id' => 9
+//    ];
 
     public function specialties()
     {
@@ -41,10 +41,10 @@ class Clinic extends Model
     /**
      * Get the facility that has the clinic.
      */
-    public function facility()
-    {
-        return $this->belongsTo('Clinic\Models\facility');
-    }
+//    public function facility()
+//    {
+//        return $this->belongsTo('Clinic\Models\facility');
+//    }
 
     public function appointments()
     {
