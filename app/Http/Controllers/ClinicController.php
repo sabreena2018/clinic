@@ -175,10 +175,13 @@ class ClinicController extends Controller
     public function storeClinicUser(ClinicUserRequest $request)
     {
 
+        logger($request);
+
         $res = Reservations::create([
             'type' => 'clinic',
             'status' => 'require-time',
             'user_id' => \Auth::user()->id,
+            'preferred_time' => Carbon::parse($request->get('preferred-time')),
             'appointment' => $request->get('date'),
         ]);
 

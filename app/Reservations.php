@@ -14,6 +14,7 @@ class Reservations extends Model
         'type',
         'status',
         'user_id',
+        'preferred_time',
         'appointment',
     ];
 

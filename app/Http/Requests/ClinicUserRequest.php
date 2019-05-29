@@ -32,6 +32,9 @@ class ClinicUserRequest extends FormRequest
                 'service_location' => 'required|not_in:0',
                 'city' => 'required',
                 'Tperiod' => 'required|not_in:0',
+                'preferred-time' => 'required',
+                'date' => 'required',
+                'service_location' => 'required|not_in:0',
             ];
         }
         return $rules;

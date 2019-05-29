@@ -49,15 +49,25 @@
                                 </div><!--col-->
                             </div>
 
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label> Preferred Time: {{ (\App\Reservations::find($reservation->id)->preferred_time)}}</label>
+                                </div><!--col-->
+                            </div>
+
 
 
                             <div class="row">
+                                {{--<div class="col-md-4">--}}
+                                    {{--{{ html()->text('Times')--}}
+                                        {{--->class('form-control')--}}
+                                        {{--->placeholder('Time')--}}
+                                        {{--->id('time')--}}
+                                        {{--->autofocus() }}--}}
+                                {{--</div>--}}
+
                                 <div class="col-md-4">
-                                    {{ html()->text('Times')
-                                        ->class('form-control')
-                                        ->placeholder('Time')
-                                        ->id('time')
-                                        ->autofocus() }}
+                                    <input class="form-control" id="time" name="time" placeholder="HH:MM" type="text" autocomplete="off"/>
                                 </div>
 
 
@@ -97,11 +107,41 @@
             </div><!--card-footer-->
         </div><!--card-->
 
+        @push('after-styles')
+
+
+            <link rel="stylesheet"
+                  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+
+            <link rel="stylesheet"
+                  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.3/daterangepicker.min.css">
+
+        @endpush
+
+        @push('after-scripts')
+
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.3/daterangepicker.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+
+        @endpush
+
 
         <script type="application/javascript">
             var listitems = [];
 
             $(document).ready(function () {
+
+
+
+                $('#time').datetimepicker({
+                    format: 'LT'
+                });
+
+
                 $('.select2_class_specialties').select2({
                     placeholder: "Select Specialties",
                     tags: true
@@ -110,7 +150,7 @@
                 let body = $('body');
 
                 body.on('click', '#button_insert', function (e) {
-                    var timeFormat = /^([0-9]{2})\:([0-9]{2})$/;
+                    var timeFormat = /^(1[0-2]|0?[1-9]):([0-5]?[0-9])(.?[AP]M)?$/;
                     var time = document.getElementById('time');
                     if (time.value === ""){
                         window.alert("You must enter time");
