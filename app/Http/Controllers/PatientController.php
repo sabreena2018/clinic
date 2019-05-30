@@ -6,6 +6,7 @@ use App\Models\Auth\Role;
 use App\Models\Auth\User;
 use App\Models\Auth\Clinic;
 use App\Models\Auth\Patient;
+use App\Reservations;
 use Illuminate\Http\Request;
 use App\Models\Auth\Appointment;
 use App\Models\Auth\Specialties;
@@ -56,7 +57,12 @@ class PatientController extends Controller
 
     public function show(PatientRequest $request, Patient $patient)
     {
-        return view('patient.show', compact('patient'));
+        $reservations = Reservations::query()
+        ->where('user_id',$patient->id)
+            ->orderBy('id', 'asc')
+            ->paginate(25);
+
+        return view('patient.show', compact('reservations','patient'));
     }
 
     public function store(PatientRequest $request)

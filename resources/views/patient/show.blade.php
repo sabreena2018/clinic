@@ -30,7 +30,7 @@
 
 
                     <div class="form-group row">
-                        {{ html()->label('email')
+                        {{ html()->label('Email')
                             ->class('col-md-2 form-control-label')
                             ->for('email') }}
 
@@ -41,7 +41,7 @@
 
 
                     <div class="form-group row">
-                        {{ html()->label('clinics')
+                        {{ html()->label('Clinics')
                             ->class('col-md-2 form-control-label')
                             ->for('email') }}
 
@@ -50,10 +50,37 @@
                         </div><!--col-->
                     </div>
 
+
+
+                    <div class="form-group row">
+                        {{ html()->label('Phone Number')
+                        ->class('col-md-2 form-control-label')
+                        ->for('phone') }}
+
+                        <div class="col-md-10">
+                            {!! $patient->phone ?? '-' !!}
+                        </div><!--col-->
+                    </div>
+
+                    <div class="form-group row">
+                        {{ html()->label('City')
+                        ->class('col-md-2 form-control-label')
+                        ->for('city') }}
+
+                        <div class="col-md-10">
+                            {!! $patient->city ?? '-' !!}
+                        </div><!--col-->
+                    </div>
+
+
                 </div><!--col-->
 
 
             </div><!--row-->
+
+
+
+
 
             <div class="row">
                 <div class="col-md-12">
@@ -63,6 +90,63 @@
                 </div>
 
             </div>
+
+
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="form-group row">
+                        {{ html()->label('Patient Record')
+                        ->class('col-md-2 form-control-label')
+                        ->for('patientRecord') }}
+
+                        <div class="col-md-10">
+
+                            <div class="table-responsive">
+                                <table class="table">
+
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Time</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    @foreach($reservations as $reservation)
+                                    <tr>
+                                        <td>
+                                            @php
+
+                                                if(){
+
+
+
+
+                                            App\Models\Auth\Clinic::find(App\Models\Auth\ClinicUser::query->pivot->clinic_id)
+
+                                            @endphp
+                                        </td>
+
+                                        <td>
+                                            {{ $reservation->type }}
+                                        </td>
+
+                                    </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+
+                        </div><!--col-->
+                    </div>
+
+                </div><!--col-->
+
+
+            </div><!--row-->
 
 
         </div><!--card-body-->
