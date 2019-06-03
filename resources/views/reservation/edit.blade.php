@@ -94,6 +94,77 @@
                 </div><!--row-->
             </div><!--card-body-->
 
+
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <h4 class="card-title mb-0">
+                        Clinic Appointments
+                    </h4>
+                </div><!--col-->
+            </div>
+
+
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="form-group row">
+
+
+                        <div class="col-md-4">
+
+                            <div class="table-responsive">
+                                <table class="table">
+
+                                    <thead>
+                                    <tr>
+                                        <th style='text-align:center'>Appointments Reserved</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    @foreach($appointments as $appointment)
+                                        <tr>
+{{--                                            {!! logger($patientRecord) !!}--}}
+                                            <td style='text-align:center'>
+                                                {{ $appointment->appointment }}
+                                            </td>
+{{--                                            <td>--}}
+{{--                                                {{ $patientRecord["name"] }}--}}
+{{--                                            </td>--}}
+
+{{--                                            <td>--}}
+{{--                                                {{ $patientRecord["type"] }}--}}
+{{--                                            </td>--}}
+
+{{--                                            <td>--}}
+{{--                                                {{ $patientRecord["appointment"] }}--}}
+{{--                                            </td>--}}
+
+{{--                                            <td>--}}
+{{--                                                {{ $patientRecord["created_at"] }}--}}
+{{--                                            </td>--}}
+
+{{--                                            <td>--}}
+{{--                                                {{ $patientRecord["status"] }}--}}
+{{--                                            </td>--}}
+
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+
+                        </div><!--col-->
+                    </div>
+
+                </div><!--col-->
+
+
+            </div>
+
             <div class="card-footer">
                 <div class="row">
                     <div class="col">

@@ -86,7 +86,27 @@ class ReservationController extends Controller
 
     public function edit(Request $request, Reservations $reservation)
     {
-        return view('reservation.edit', compact('reservation'));
+        $appointments = null;
+        if ($reservation->type == 'clinic'){
+            $appointments = ClinicUser::query()
+                ->select('clinic_user.appointment')
+                ->join('clinics','clinic_user.clinic_id','=','clinics.id')
+                ->where('clinics.owner_id',\Auth::user()->id)
+                ->orderBy('clinic_user.appointment', 'desc')
+                ->get();
+
+        }elseif ($reservation->type == 'lab'){
+            $appointments = LabRegistration::query()
+                ->select('lab_registrations.appointment')
+                ->join('labs','lab_registrations.lab_id','=','labs.id')
+                ->where('labs.owner_id',\Auth::user()->id)
+                ->orderBy('lab_registrations.appointment', 'desc')
+                ->get();
+        }
+
+
+
+        return view('reservation.edit', compact('reservation','appointments'));
     }
 
 
