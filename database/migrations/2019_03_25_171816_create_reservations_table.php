@@ -19,7 +19,7 @@ class CreateReservationsTable extends Migration
             $table->string('status');
             $table->unsignedInteger('user_id');
             $table->date('appointment');
-            $table->time('preferred_time');
+            $table->time('preferred_time')->nullable();
             $table->timestamps();
         });
     }

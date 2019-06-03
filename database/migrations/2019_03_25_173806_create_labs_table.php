@@ -16,6 +16,7 @@ class CreateLabsTable extends Migration
         Schema::create('labs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->integer('owner_id')->nullable();
             $table->timestamps();
         });
     }

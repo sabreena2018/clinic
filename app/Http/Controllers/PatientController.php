@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Auth\Role;
 
+use App\Models\Auth\Lab;
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
 use App\Models\Auth\Clinic;
@@ -20,6 +21,7 @@ use App\Repositories\Backend\Auth\PermissionRepository;
 use App\Http\Requests\Backend\Auth\Role\StoreRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\ManageRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\UpdateRoleRequest;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class PatientController.
@@ -54,6 +56,48 @@ class PatientController extends Controller
         return view('patient.create');
     }
 
+    public function PatientReservationRecord(PatientRequest $request, Patient $patient)
+    {
+        $owner = \Auth::user();
+        if ($owner->type == 'owner'){
+            $clinicsIds = Clinic::query()
+                ->select('id')
+                ->where('owner_id',\Auth::user()->id)
+                ->get();
+
+            $labsIds = Lab::query()
+                ->select('id')
+                ->where('owner_id',\Auth::user()->id)
+                ->get();
+        }
+
+//        DB::enableQueryLog();
+
+        $patientClinics = Reservations::query()
+            ->where('reservations.user_id',$patient->id)
+            ->join('clinic_user','reservations.id','=','clinic_user.reservation_id')
+            ->whereIn('clinic_user.clinic_id',$clinicsIds)
+            ->join('clinics','clinics.id','=','clinic_user.clinic_id')
+            ->select('reservations.id','clinics.name','reservations.appointment','reservations.created_at','reservations.type','reservations.status')
+            ->get()->toArray();
+
+//        logger(DB::getQueryLog());
+
+        $patientLabs = Reservations::query()
+            ->select('reservations.id','labs.name','reservations.appointment','reservations.created_at','reservations.type','reservations.status')
+            ->where('reservations.user_id',$patient->id)
+            ->join('lab_registrations','reservations.id','=','lab_registrations.reservation_id')
+            ->join('labs','labs.id','=','lab_registrations.lab_id')
+            ->whereIn('lab_registrations.lab_id',$labsIds)
+            ->get()->toArray();
+
+
+        $patientRecords = array_merge($patientClinics, $patientLabs);
+
+
+        return view('patient.patientReservationRecord', compact('patientRecords'));
+
+    }
 
     public function show(PatientRequest $request, Patient $patient)
     {

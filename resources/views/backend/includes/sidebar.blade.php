@@ -216,6 +216,20 @@
                         </a>
                     </li>
                 </ul>
+
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link {{ active_class(Active::checkUriPattern('admin/patient/*')) }}"
+                           href="{{ route('admin.clinic.patientIndex') }}">
+                            Patients Records
+
+                            @if ($pending_approval > 0)
+                                <span class="badge badge-danger">{{ $pending_approval }}</span>
+                            @endif
+                        </a>
+                    </li>
+                </ul>
+
             </li>
 
             @if ($logged_in_user->isAdmin() and isAdmin())

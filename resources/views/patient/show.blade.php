@@ -116,16 +116,7 @@
                                     @foreach($reservations as $reservation)
                                     <tr>
                                         <td>
-                                            @php
 
-                                                if(){
-
-
-
-
-                                            App\Models\Auth\Clinic::find(App\Models\Auth\ClinicUser::query->pivot->clinic_id)
-
-                                            @endphp
                                         </td>
 
                                         <td>
