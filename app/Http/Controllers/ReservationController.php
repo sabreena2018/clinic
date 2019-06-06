@@ -210,6 +210,26 @@ class ReservationController extends Controller
         return view('reservation.index');
     }
 
+    public function removeRequestsIndex(Request $request)
+    {
+
+        $reservations =  Reservations::query()
+            ->where('status','remove-rejected')
+            ->orderBy('status', 'asc')
+            ->paginate(25);
+
+
+        if ($request->get('view', false)) {
+            return view('reservation.partial.removeRequestsIndexTable',compact('reservations'));
+        }
+
+        return view('reservation.removeRequestsIndex');
+
+
+
+
+    }
+
 
     public function storeTimeUserIndex(Request $request)
     {
@@ -249,27 +269,40 @@ class ReservationController extends Controller
 
     public function destroy(Request $request)
     {
-        $type = Reservations::find($request->reservation_id)->type;
+        $reservation = Reservations::find($request->reservation_id);
+        $type = $reservation->type;
 
-        if ($type == 'lab'){
-            LabRegistration::query()->where('reservation_id',$request->reservation_id)
-                ->delete();
-        }
-        elseif ($type == 'clinic'){
-            ClinicUser::query()->where('reservation_id',$request->reservation_id)
-                ->delete();
-        }
-        elseif ($type == 'private-doctor'){
-            PrivateDoctorRegistration::query()->where('reservation_id',$request->reservation_id)
-                ->delete();
-        }
-        elseif ($type == 'nurse'){
-            NurseRegistration::query()->where('reservation_id',$request->reservation_id)
-                ->delete();
+        if ($request->removeStatus == 'remove-rejected'){
+            $reservation->status = 'remove-rejected';
+            $reservation->save();
         }
 
-        $res = Reservations::find($request->reservation_id);
-        $res->delete();
+        else{
+            if ($reservation->status == 'request-remove'){
+                $reservation->delete();
+
+                if ($type == 'lab'){
+                    LabRegistration::query()->where('reservation_id',$request->reservation_id)
+                        ->delete();
+                }
+                elseif ($type == 'clinic'){
+                    ClinicUser::query()->where('reservation_id',$request->reservation_id)
+                        ->delete();
+                }
+                elseif ($type == 'private-doctor'){
+                    PrivateDoctorRegistration::query()->where('reservation_id',$request->reservation_id)
+                        ->delete();
+                }
+                elseif ($type == 'nurse'){
+                    NurseRegistration::query()->where('reservation_id',$request->reservation_id)
+                        ->delete();
+                }
+
+            }
+                $reservation->status = 'request-remove';
+                $reservation->save();
+            }
+
     }
 
 

@@ -82,9 +82,12 @@
                             $editButton = "";
                             if ($diff != 1 || $status == 'waiting-choose'){
                              $editButton = '<a href="' . route('admin.reservation.storeTimeUserIndex', ["id" => $clinic->reservation_id,'type' => 'clinic']) . '" class="btn btn-primary"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.edit') . '"></i></a>';
-                             $deleteButton2 = '<button type="button" id="destroy" onclick="setResId('.$clinic->reservation_id.')" class="btn btn-danger">
-                                         <i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.delete') . '"></i>
-                                         </button>';
+                            if ($status != 'request-remove'){
+                                  $deleteButton2 = '<button type="button" id="destroy" onclick="setResId('.$clinic->reservation_id.')" class="btn btn-danger">
+                                                 <i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.delete') . '"></i>
+                                                 </button>';
+                                }
+                                $actionButton = '<a class="btn btn-warning"><i title="require-time"></i>Remove Requested</a>';
                              }
 
                                 if ($status == 'waiting-choose'){
@@ -208,6 +211,7 @@
             {{--}--}}
         {{--});--}}
     {{--});--}}
+
 
     body.on('click', '#destroy', function (e) {
         e.preventDefault();

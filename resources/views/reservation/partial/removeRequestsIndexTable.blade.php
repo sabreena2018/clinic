@@ -7,7 +7,6 @@
                     <th>Type</th>
                     <th>Status</th>
                     <th>Date of Reservation</th>
-                    <th>@lang('labels.general.actions')</th>
                 </tr>
 
                 <tbody>
@@ -32,32 +31,6 @@
                                 }
 
                             @endphp
-
-                        </td>
-                        <td>
-                            @php
-
-                                if ($reservation->status == "request-remove"){
-
-                                $acceptRempve = '<button type="button" id="destroy" onclick="setResId('.$reservation->id.')" class="btn btn-danger">
-                                                 <i title="require-time"></i>Accept Remove
-                                                 </button>';
-
-                                $rejectRemove = '<button type="button" id="rejectDestroy" onclick="setResId('.$reservation->id.')" class="btn btn-warning">
-                                                 <i title="require-time"></i>Reject Remove
-                                                 </button>';
-                                    echo $rejectRemove.$acceptRempve;
-                                }
-                                else if ($reservation->status == "confirm-treatment"){
-                                    echo '<a class="btn btn-danger"><i title="require-time"></i>Confirm Treatment</a>';
-                                }
-                                else{
-                                      echo $reservation->action_buttons;
-                                   }
-
-                            @endphp
-
-
 
                         </td>
                     </tr>

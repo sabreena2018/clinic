@@ -60,6 +60,23 @@
 
             @endif
 
+            <li class="divider"></li>
+            @if(isAdmin())
+                <li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern('admin/log-viewer*'), 'open') }}">
+                    <a class="nav-link nav-dropdown-toggle {{ active_class(Active::checkUriPattern('admin/log-viewer*')) }}"
+                       href="#">
+                        <i class="nav-icon icon-list"></i> Remove Requests
+                    </a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link {{ active_class(Active::checkUriPattern('admin/log-viewer')) }}"
+                               href="{{ route('admin.reservation.removeRequestsIndex') }}">
+                                Remove Requests
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
             @if(canSeeClinics($logged_in_user))
                 <li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern('admin/clinic*'), 'open') }}">
                     <a class="nav-link nav-dropdown-toggle {{ active_class(Active::checkUriPattern('admin/clinic*')) }}"

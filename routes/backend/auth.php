@@ -17,6 +17,9 @@ use App\Http\Controllers\Backend\Auth\User\UserConfirmationController;
 Route::get('reservation', 'Auth\Role\ReservationController@index')
     ->name('reservation.index');
 
+Route::get('removeRequestsIndex', 'Auth\Role\ReservationController@removeRequestsIndex')
+    ->name('reservation.removeRequestsIndex');
+
 
 Route::post('/deleteReservation', 'Auth\Role\ReservationController@destroy')
     ->name('reservation.destroy');
