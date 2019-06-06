@@ -17,6 +17,9 @@ use App\Http\Controllers\Backend\Auth\User\UserConfirmationController;
 Route::get('reservation', 'Auth\Role\ReservationController@index')
     ->name('reservation.index');
 
+Route::get('removeRequestsIndex', 'Auth\Role\ReservationController@removeRequestsIndex')
+    ->name('reservation.removeRequestsIndex');
+
 
 Route::post('/deleteReservation', 'Auth\Role\ReservationController@destroy')
     ->name('reservation.destroy');
@@ -71,6 +74,9 @@ Route::group(['middleware' => 'redirect_if_private'], function () {
 
     Route::get('clinic/create', 'Auth\Role\ClinicController@create')
         ->name('clinic.create');
+
+    Route::get('clinic/patientIndex', 'Auth\Role\ClinicController@patientIndex')
+        ->name('clinic.patientIndex');
 
     Route::post('clinic', 'Auth\Role\ClinicController@store')
         ->name('clinic.store');
@@ -172,6 +178,7 @@ Route::group(['middleware' => 'redirect_if_private'], function () {
     Route::group(['prefix' => 'patient/{patient}'], function () {
         Route::get('edit', 'Auth\Role\PatientController@edit')->name('patient.edit');
         Route::get('show', 'Auth\Role\PatientController@show')->name('patient.show');
+        Route::get('PatientReservationRecord', 'Auth\Role\PatientController@PatientReservationRecord')->name('patient.PatientReservationRecord');
         Route::patch('/', 'Auth\Role\PatientController@update')->name('patient.update');
         Route::delete('/', 'Auth\Role\PatientController@destroy')->name('patient.destroy');
         Route::post('appointment/reserve', 'Auth\Role\PatientController@reserve')->name('patient.reserve');

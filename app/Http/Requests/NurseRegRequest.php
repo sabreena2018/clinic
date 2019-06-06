@@ -5,9 +5,9 @@ namespace App\Http\Requests\Backend\Auth\Role;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class PrivateDoctorRequest.
+ * Class NurseRequest.
  */
-class PrivateDoctorRequest extends FormRequest
+class NurseRegRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,12 +29,9 @@ class PrivateDoctorRequest extends FormRequest
         $rules = [];
         if(!$this->isMethod('GET')){
             $rules = [
-                'doctor' => 'required|not_in:0',
-                'date' => 'required',
-                'Tperiod' => 'required',
+                'dateFrom' => 'required',
+                'dateTo' => 'required',
                 'city' => 'required',
-                'service_location' => 'required|not_in:0',
-
             ];
         }
         return $rules;

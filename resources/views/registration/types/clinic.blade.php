@@ -57,7 +57,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div>Clinics</div>
-                                            {!! Form::select('clinics', app(\App\Methods\GeneralMethods::class)->getAllClinics(), null, ['id' => 'clinics','class' => 'form-control select2_class_clinic']); !!}
+                                            {!! Form::select('clinics', app(\App\Methods\GeneralMethods::class)->getAllClinics(), null, ['id' => 'clinics','class' => 'form-control select2_class_clinic','onchange'=>'clinicsSelectChanged()']); !!}
                                         </div>
 
 
@@ -94,18 +94,21 @@
                                         <div class="col-md-3">
                                             <label> Choose appointment</label>
                                             <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text" autocomplete="off"/>
+                                        </div>
 
-
+                                        <div class="col-md-2">
+                                            <label> Preferred Time </label>
+                                            <input class="form-control" id="preferred-time" name="preferred-time" placeholder="HH:MM" type="text" autocomplete="off"/>
                                         </div>
 
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <label for="Tperiod">Time Period</label>
                                             {!! Form::select('Tperiod', ['' => 'None','morning' => 'Morning', 'evening' => 'Evening'], null, ['id' => 'Tperiod','class' => 'form-control select2_class_Tperiod']); !!}
                                         </div>
 
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <label for="phone">Home / clinic</label>
                                             {!! Form::select('service_location', ['' => 'None','home' => 'Home', 'clinic' => 'Clinic'], null, ['id' => 'service_location','class' => 'form-control select2_class_service_location']); !!}
 
@@ -147,6 +150,15 @@
     </div>
 
 
+        <script>
+
+            function clinicsSelectChanged() {
+                var clinic = document.getElementById("clinics").value;
+
+            }
+
+
+        </script>
         <script type="application/javascript">
 
         let body = $('body');
@@ -178,6 +190,11 @@
 
             <script>
                 $(document).ready(function(){
+
+                    $('#preferred-time').datetimepicker({
+                        format: 'LT'
+                    });
+
                     var date_input=$('input[name="date"]'); //our date input has the name "date"
                     var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
                     var options={
@@ -191,10 +208,8 @@
             </script>
 
         {{--<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>--}}
-        <!-- Bootstrap Date-Picker Plugin -->
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 
     <script type="text/javascript">
 

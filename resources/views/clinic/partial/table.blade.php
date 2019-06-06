@@ -46,11 +46,15 @@
                         <td>
 
                             @php
-                                if ((\App\Reservations::find($clinic->reservation_id)->status) == 'confirm-treatment'){
+                            $status = \App\Reservations::find($clinic->reservation_id)->status;
+                                if ($status == 'confirm-treatment'){
                                         echo badges([$clinic->time]);
                                 }
+                                elseif ($status == 'require-confirm'){
+                                        echo badges([$clinic->time],'warning');
+                                }
                                 else{
-                                    echo badges(['NOT YET'],'danger');
+                                    echo badges([(\App\Reservations::find($clinic->reservation_id)->preferred_time)],'danger');
                                 }
                             @endphp
 
@@ -78,9 +82,12 @@
                             $editButton = "";
                             if ($diff != 1 || $status == 'waiting-choose'){
                              $editButton = '<a href="' . route('admin.reservation.storeTimeUserIndex', ["id" => $clinic->reservation_id,'type' => 'clinic']) . '" class="btn btn-primary"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.edit') . '"></i></a>';
-                             $deleteButton2 = '<button type="button" id="destroy" onclick="setResId('.$clinic->reservation_id.')" class="btn btn-danger">
-                                         <i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.delete') . '"></i>
-                                         </button>';
+                            if ($status != 'request-remove'){
+                                  $deleteButton2 = '<button type="button" id="destroy" onclick="setResId('.$clinic->reservation_id.')" class="btn btn-danger">
+                                                 <i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="' . __('buttons.general.crud.delete') . '"></i>
+                                                 </button>';
+                                }
+                                $actionButton = '<a class="btn btn-warning"><i title="require-time"></i>Remove Requested</a>';
                              }
 
                                 if ($status == 'waiting-choose'){
@@ -92,7 +99,7 @@
                                 }
                                 elseif($status == 'require-time'){
                                         $actionButton = '<a class="btn btn-warning"><i title="require-time"></i>Waiting</a>';
-                                        $actionButton = $actionButton.$deleteButton2.$editButton;
+                                        $actionButton = $actionButton.$deleteButton2;
                                 }
                                 elseif ($status == 'require-confirm'){
                                     $actionButton = '<button type="button" onclick="myFunction('.$clinic->reservation_id.')" name="'.$clinic->reservation_id.'" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="ConfirmButton">
@@ -204,6 +211,7 @@
             {{--}--}}
         {{--});--}}
     {{--});--}}
+
 
     body.on('click', '#destroy', function (e) {
         e.preventDefault();

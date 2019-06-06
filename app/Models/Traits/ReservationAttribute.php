@@ -70,22 +70,16 @@ trait ReservationAttribute
         else if ($this->status == "require-confirm-owner"){
             $state = $this->approve_button;
         }
-
-//        if (isAdmin()) {
-//            $edit = $this->edit_button;
+//        else if($this->status == "request-remove"){
 //
-//            if (isAdmin()) {
-//                if (!$this->approved) {
-//                    $state = $this->approve_button;
-//                } else {
-//                    $state = $this->reject_button;
-//                }
-//            }
+//            $acceptRemove ='<a href="' . route('admin.reservation.destroy', ['reservation_id' => $this->id]) . '" class="btn btn-danger"><i title="require-time"></i>Accept Remove</a>';
+//            $rejectRemove ='<a href="' . route('admin.reservation.destroy', ['reservation_id' => $this->id]) . '" class="btn btn-warning"><i title="require-time"></i>Reject Remove</a>';
 //
-//        } else {
-//            $edit = '';
+/*            _token: '<?php echo e(csrf_token()); ?>',*/
+//
+//            $state = $rejectRemove.$acceptRemove;
+//
 //        }
-
 
         return '
     	<div class="btn-group" role="group" aria-label="' . __('labels.backend.access.users.user_actions') . '">

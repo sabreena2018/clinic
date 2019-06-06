@@ -7,6 +7,8 @@ use App\Methods\ClinicMethods;
 use App\Methods\DoctorMethods;
 use App\Models\Auth\Clinic;
 use App\Models\Auth\ClinicUser;
+use App\Models\Auth\Lab;
+use App\Models\Auth\Patient;
 use App\Models\Auth\Role;
 use App\Models\Auth\Appointment;
 use App\Http\Controllers\Controller;
@@ -23,6 +25,8 @@ use App\Http\Requests\Backend\Auth\Role\UpdateRoleRequest;
 use App\Reservations;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Monolog\Logger;
 
 /**
  * Class ClinicController.
@@ -172,13 +176,62 @@ class ClinicController extends Controller
     }
 
 
+    public function patientIndex()
+    {
+
+        if (\Auth::user()->type == 'owner'){
+
+            $clinicsIds = Clinic::query()
+                ->select('id')
+                ->where('owner_id',\Auth::user()->id)
+                ->get();
+
+            $labsIds = Lab::query()
+                ->select('id')
+                ->where('owner_id',\Auth::user()->id)
+                ->get();
+
+        }
+
+
+        $patientsIds = Reservations::query()
+            ->select('reservations.user_id')
+            ->join('clinic_user','reservations.id','=','clinic_user.reservation_id')
+            ->whereIn('clinic_user.clinic_id',$clinicsIds)
+            ->distinct()
+            ->get()->toArray();
+
+
+        $patientsIdsLab = Reservations::query()
+            ->select('reservations.user_id')
+            ->join('lab_registrations','reservations.id','=','lab_registrations.reservation_id')
+            ->whereIn('lab_registrations.lab_id',$labsIds)
+            ->distinct()
+            ->get()->toArray();
+
+
+        foreach ($patientsIdsLab as $patientsIdsL){
+            if (!in_array($patientsIdsL,$patientsIds))
+                array_push($patientsIds,$patientsIdsL);
+        }
+
+
+        $patients = Patient::findMany($patientsIds);
+
+        return view('patient.patientIndex', compact('patients'));
+    }
+
+
     public function storeClinicUser(ClinicUserRequest $request)
     {
+
+        logger($request);
 
         $res = Reservations::create([
             'type' => 'clinic',
             'status' => 'require-time',
             'user_id' => \Auth::user()->id,
+            'preferred_time' => Carbon::parse($request->get('preferred-time')),
             'appointment' => $request->get('date'),
         ]);
 

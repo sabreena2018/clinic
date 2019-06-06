@@ -17,6 +17,7 @@ use App\Http\Requests\Backend\Auth\Role\StoreRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\ManageRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\UpdateRoleRequest;
 use App\Reservations;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -151,6 +152,7 @@ class PrivateDoctorController extends Controller
             'type' => 'private-doctor',
             'status' => 'require-time',
             'user_id' => \Auth::user()->id,
+            'preferred_time' => Carbon::parse($request->get('preferred-time')),
             'appointment' => $request->get('date'),
         ]);
 

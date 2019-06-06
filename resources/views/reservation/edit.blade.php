@@ -23,8 +23,8 @@
                     <div class="row">
                         <div class="col-sm-5">
                             <h4 class="card-title mb-0">
-                                Clinic Management
-                                <small class="text-muted">Create Clinic</small>
+                                {{ $reservation->type }} Management
+                                <small class="text-muted">Create {{ $reservation->type }}</small>
                             </h4>
                         </div><!--col-->
                     </div><!--row-->
@@ -49,15 +49,25 @@
                                 </div><!--col-->
                             </div>
 
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label> Preferred Time: {{ (\App\Reservations::find($reservation->id)->preferred_time)}}</label>
+                                </div><!--col-->
+                            </div>
+
 
 
                             <div class="row">
+                                {{--<div class="col-md-4">--}}
+                                    {{--{{ html()->text('Times')--}}
+                                        {{--->class('form-control')--}}
+                                        {{--->placeholder('Time')--}}
+                                        {{--->id('time')--}}
+                                        {{--->autofocus() }}--}}
+                                {{--</div>--}}
+
                                 <div class="col-md-4">
-                                    {{ html()->text('Times')
-                                        ->class('form-control')
-                                        ->placeholder('Time')
-                                        ->id('time')
-                                        ->autofocus() }}
+                                    <input class="form-control" id="time" name="time" placeholder="HH:MM" type="text" autocomplete="off"/>
                                 </div>
 
 
@@ -84,6 +94,83 @@
                 </div><!--row-->
             </div><!--card-body-->
 
+
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <h4 class="card-title mb-0">
+                        {{ $reservation->type }} Appointments
+                    </h4>
+                </div><!--col-->
+            </div>
+
+
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="form-group row">
+
+
+                        <div class="col-md-4">
+
+                            <div class="table-responsive">
+                                <table class="table">
+
+                                    <thead>
+                                    <tr>
+                                        <th style='text-align:center'>Appointments Date</th>
+                                        <th style='text-align:center'>Appointments Time</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    @foreach($appointments as $appointment)
+                                        <tr>
+{{--                                            {!! logger($patientRecord) !!}--}}
+                                            <td style='text-align:center'>
+                                                {{ $appointment->appointment }}
+                                            </td>
+
+                                            <td style='text-align:center'>
+                                                {{ $appointment->time }}
+                                            </td>
+
+{{--                                            <td>--}}
+{{--                                                {{ $patientRecord["name"] }}--}}
+{{--                                            </td>--}}
+
+{{--                                            <td>--}}
+{{--                                                {{ $patientRecord["type"] }}--}}
+{{--                                            </td>--}}
+
+{{--                                            <td>--}}
+{{--                                                {{ $patientRecord["appointment"] }}--}}
+{{--                                            </td>--}}
+
+{{--                                            <td>--}}
+{{--                                                {{ $patientRecord["created_at"] }}--}}
+{{--                                            </td>--}}
+
+{{--                                            <td>--}}
+{{--                                                {{ $patientRecord["status"] }}--}}
+{{--                                            </td>--}}
+
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+
+                        </div><!--col-->
+                    </div>
+
+                </div><!--col-->
+
+
+            </div>
+
             <div class="card-footer">
                 <div class="row">
                     <div class="col">
@@ -97,11 +184,41 @@
             </div><!--card-footer-->
         </div><!--card-->
 
+        @push('after-styles')
+
+
+            <link rel="stylesheet"
+                  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+
+            <link rel="stylesheet"
+                  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.3/daterangepicker.min.css">
+
+        @endpush
+
+        @push('after-scripts')
+
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.3/daterangepicker.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+
+        @endpush
+
 
         <script type="application/javascript">
             var listitems = [];
 
             $(document).ready(function () {
+
+
+
+                $('#time').datetimepicker({
+                    format: 'LT'
+                });
+
+
                 $('.select2_class_specialties').select2({
                     placeholder: "Select Specialties",
                     tags: true
@@ -110,7 +227,7 @@
                 let body = $('body');
 
                 body.on('click', '#button_insert', function (e) {
-                    var timeFormat = /^([0-9]{2})\:([0-9]{2})$/;
+                    var timeFormat = /^(1[0-2]|0?[1-9]):([0-5]?[0-9])(.?[AP]M)?$/;
                     var time = document.getElementById('time');
                     if (time.value === ""){
                         window.alert("You must enter time");

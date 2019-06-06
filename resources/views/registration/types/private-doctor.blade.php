@@ -56,6 +56,11 @@
                                     </div>
 
                                     <div class="col-md-3">
+                                        <label> Preferred Time </label>
+                                        <input class="form-control" id="preferred-time" name="preferred-time" placeholder="HH:MM" type="text" autocomplete="off"/>
+                                    </div>
+
+                                    <div class="col-md-3">
                                         <div>City</div>
                                         {!!  html()->text('city')
                                             ->id('city')
@@ -125,6 +130,12 @@
 
             <script>
                 $(document).ready(function(){
+
+                    $('#preferred-time').datetimepicker({
+                        format: 'LT'
+                    });
+
+
                     var date_input=$('input[name="date"]'); //our date input has the name "date"
                     var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
                     var options={
@@ -179,6 +190,9 @@
             <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.3/daterangepicker.min.js"></script>
     @endpush
 
 
