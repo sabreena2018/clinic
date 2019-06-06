@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Auth\Role;
 
 use App\Helpers\Auth\Auth;
 use App\Http\Requests\Backend\Auth\Role\ClinicRequest;
+use App\Http\Requests\Backend\Auth\Role\NurseRegRequest;
 use App\Http\Requests\Backend\Auth\Role\NurseRequest;
 use App\Models\Auth\Clinic;
 use App\Models\Auth\Nurse;
@@ -54,7 +55,6 @@ class NurseController extends Controller
             })
             ->orderBy('id', 'asc')
             ->paginate(25);
-
 
 
         if ($request->get('view', false)) {
@@ -127,11 +127,11 @@ class NurseController extends Controller
     }
 
 
-    public function nurseStoreReg(Request $request)
+    public function nurseStoreReg(NurseRegRequest $request)
     {
         $res = Reservations::create([
             'type' => 'nurse',
-            'status' => 'require-time',
+            'status' => 'require-confirm-owner',
             'user_id' => \Auth::user()->id,
             'appointment' => $request->get('dateFrom'),
         ]);

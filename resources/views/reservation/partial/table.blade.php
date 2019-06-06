@@ -15,16 +15,34 @@
                     <tr>
                         <td>{{ $reservation->type }}</td>
                         <td>{{ $reservation->status }}</td>
-                        <td>{{ $reservation->appointment }}</td>
+                        <td>
+
+                            @php
+
+                                if ($reservation->type == 'nurse'){
+                                    $nurse = \App\NurseRegistration::query()
+                                    ->select('appointmentFrom','appointmentTo')
+                                    ->where('reservation_id',$reservation->id)->get()->toArray();
+
+                                    echo $nurse[0]['appointmentFrom'].'   to   '.$nurse[0]['appointmentTo'];
+                                }
+
+                                else{
+                                    echo $reservation->appointment;
+                                }
+
+                            @endphp
+
+                        </td>
                         <td>
                             @php
 
                                 if ($reservation->status == "confirm-treatment"){
-                                echo '<a class="btn btn-danger"><i title="require-time"></i>Confirm Treatment</a>';
+                                    echo '<a class="btn btn-danger"><i title="require-time"></i>Confirm Treatment</a>';
                                 }
-                               else{
-                                  echo $reservation->action_buttons;
-                               }
+                                else{
+                                      echo $reservation->action_buttons;
+                                   }
 
                             @endphp
 

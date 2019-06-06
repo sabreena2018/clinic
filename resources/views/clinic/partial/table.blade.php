@@ -46,8 +46,12 @@
                         <td>
 
                             @php
-                                if ((\App\Reservations::find($clinic->reservation_id)->status) == 'confirm-treatment'){
+                            $status = \App\Reservations::find($clinic->reservation_id)->status;
+                                if ($status == 'confirm-treatment'){
                                         echo badges([$clinic->time]);
+                                }
+                                elseif ($status == 'require-confirm'){
+                                        echo badges([$clinic->time],'warning');
                                 }
                                 else{
                                     echo badges([(\App\Reservations::find($clinic->reservation_id)->preferred_time)],'danger');
@@ -92,7 +96,7 @@
                                 }
                                 elseif($status == 'require-time'){
                                         $actionButton = '<a class="btn btn-warning"><i title="require-time"></i>Waiting</a>';
-                                        $actionButton = $actionButton.$deleteButton2.$editButton;
+                                        $actionButton = $actionButton.$deleteButton2;
                                 }
                                 elseif ($status == 'require-confirm'){
                                     $actionButton = '<button type="button" onclick="myFunction('.$clinic->reservation_id.')" name="'.$clinic->reservation_id.'" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="ConfirmButton">

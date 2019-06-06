@@ -23,8 +23,8 @@
                     <div class="row">
                         <div class="col-sm-5">
                             <h4 class="card-title mb-0">
-                                Clinic Management
-                                <small class="text-muted">Create Clinic</small>
+                                {{ $reservation->type }} Management
+                                <small class="text-muted">Create {{ $reservation->type }}</small>
                             </h4>
                         </div><!--col-->
                     </div><!--row-->
@@ -99,7 +99,7 @@
             <div class="row">
                 <div class="col-sm-5">
                     <h4 class="card-title mb-0">
-                        Clinic Appointments
+                        {{ $reservation->type }} Appointments
                     </h4>
                 </div><!--col-->
             </div>
@@ -117,7 +117,8 @@
 
                                     <thead>
                                     <tr>
-                                        <th style='text-align:center'>Appointments Reserved</th>
+                                        <th style='text-align:center'>Appointments Date</th>
+                                        <th style='text-align:center'>Appointments Time</th>
 
                                     </tr>
                                     </thead>
@@ -129,6 +130,11 @@
                                             <td style='text-align:center'>
                                                 {{ $appointment->appointment }}
                                             </td>
+
+                                            <td style='text-align:center'>
+                                                {{ $appointment->time }}
+                                            </td>
+
 {{--                                            <td>--}}
 {{--                                                {{ $patientRecord["name"] }}--}}
 {{--                                            </td>--}}

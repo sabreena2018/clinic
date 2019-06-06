@@ -57,7 +57,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div>Clinics</div>
-                                            {!! Form::select('clinics', app(\App\Methods\GeneralMethods::class)->getAllClinics(), null, ['id' => 'clinics','class' => 'form-control select2_class_clinic']); !!}
+                                            {!! Form::select('clinics', app(\App\Methods\GeneralMethods::class)->getAllClinics(), null, ['id' => 'clinics','class' => 'form-control select2_class_clinic','onchange'=>'clinicsSelectChanged()']); !!}
                                         </div>
 
 
@@ -150,6 +150,15 @@
     </div>
 
 
+        <script>
+
+            function clinicsSelectChanged() {
+                var clinic = document.getElementById("clinics").value;
+
+            }
+
+
+        </script>
         <script type="application/javascript">
 
         let body = $('body');

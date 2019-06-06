@@ -24,6 +24,7 @@ class AuthTableSeeder extends Seeder
         $this->call(PermissionRoleTableSeeder::class);
         $this->call(UserRoleTableSeeder::class);
         $this->call(LabsTableSeeder::class);
+        $this->call(ClinicNurseSeeder::class);
 
         $this->call(ClinicTableSeeder::class);
         $this->call(AppointmentTableSeeder::class);
