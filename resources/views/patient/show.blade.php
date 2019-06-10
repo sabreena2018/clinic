@@ -117,10 +117,24 @@
                                     <tr>
                                         <td>
 
+
+                                        @if ($reservation->type == 'clinic')
+                                            {{ \App\Models\Auth\ClinicUser::query()->where('reservation_id',$reservation->id)->join('clinics','clinics.id','=','clinic_user.clinic_id')->get('clinics.name') }}
+                                            @elseif($reservation->type == 'lab')
+                                                {{ \App\LabRegistration::query()->where('reservation_id',$reservation->id)->join('labs','labs.id','=','lab_registrations.lab_id')->get('labs.name') }}
+                                            @elseif($reservation->type == 'doctor')
+                                                {{ \App\PrivateDoctorRegistration::query()->where('reservation_id',$reservation->id)->join('users','users.id','=','private_doctor_registrations.doctor_id')->get('users.name') }}
+                                            @elseif($reservation->type == 'nurse')
+                                                {{ \App\NurseRegistration::query()->where('reservation_id',$reservation->id)->join('users','users.id','=','nurse_registrations.nurse_id')->get('users.name') }}
+                                            @endif
+
                                         </td>
 
                                         <td>
                                             {{ $reservation->type }}
+                                        </td>
+                                        <td>
+                                            {{ $reservation->time }}
                                         </td>
 
                                     </tr>

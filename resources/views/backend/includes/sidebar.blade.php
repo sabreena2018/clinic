@@ -221,6 +221,7 @@
                     @endif
                 </a>
 
+                @if(isAdmin())
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
                         <a class="nav-link {{ active_class(Active::checkUriPattern('admin/patient/*')) }}"
@@ -234,6 +235,9 @@
                     </li>
                 </ul>
 
+                @endif
+
+                @if(!isAdmin() && isNotPatient())
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
                         <a class="nav-link {{ active_class(Active::checkUriPattern('admin/patient/*')) }}"
@@ -246,6 +250,8 @@
                         </a>
                     </li>
                 </ul>
+
+                @endif
 
             </li>
 
