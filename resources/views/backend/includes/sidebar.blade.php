@@ -117,7 +117,7 @@
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
                             <a class="nav-link {{ active_class(Active::checkUriPattern('admin/lab/*')) }}"
-                               href="{{ route('admin.lab.index') }}">
+                               href="{{ route('admin.lab.labIndex') }}">
                                 Laboratories
 
                                 @if ($pending_approval > 0)

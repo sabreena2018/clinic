@@ -110,7 +110,7 @@ class NurseController extends Controller
         if ($request->get('view', false)) {
             return view('nurse.partial.table', compact('nurses'));
         }
-        return view('nurse.index', compact('nurses'));
+        return view('nurse.nurseIndex', compact('nurses'));
 
     }
 

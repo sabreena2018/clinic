@@ -120,7 +120,7 @@ class PrivateDoctorController extends Controller
         if ($request->get('view', false)) {
             return view('private-doctor.partial.table', compact('privateDoctors'));
         }
-        return view('private-doctor.index', compact('privateDoctors'));
+        return view('private-doctor.privateDoctorIndex', compact('privateDoctors'));
 
     }
 
