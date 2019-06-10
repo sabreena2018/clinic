@@ -1,45 +1,149 @@
-<div class="row mt-4">
-    <div class="col">
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Specialties</th>
-                    <th>Doctors</th>
-                    <th>Country</th>
-                    <th>City</th>
-                    <th>Approved</th>
-                    <th>@lang('labels.general.actions')</th>
-                </tr>
+@extends('backend.layouts.app')
 
-                <tbody>
-                @foreach($labs as $lab)
-                    <tr>
-                        <td>{{ ucwords($lab->name) }}</td>
-                        <td>{!! badges($lab->specialties()->pluck('specialties.name')->toArray()) !!}</td>
-                        <td>{!! badges(app(\App\Methods\ClinicMethods::class)->getClinicDoctors($lab), 'primary')!!}</td>
-                        <td>{{ $lab->country->name }}</td>
-                        <td>{{ $lab->city }}</td>
-                        <td>{!! $lab->approved ? badges(['YES']): badges(['NO'], 'danger')!!}</td>
-                        <td>{!! $lab->action_buttons !!}</td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div><!--col-->
-</div><!--row-->
-<div class="row">
-    <div class="col-7">
-        <div class="float-left">
-            {{ $labs->total() }} labs total
-        </div>
-    </div><!--col-->
+@section('title', app_name() . ' | '. __('labels.backend.access.roles.management'))
 
-    <div class="col-5">
-        <div class="float-right">
-            {{--                    {!! $lab->render() !!}--}}
-        </div>
-    </div><!--col-->
-</div><!--row-->
+@section('content')
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-5">
+                    <h4 class="card-title mb-0">
+                        Laboratory Management
+                    </h4>
+                </div><!--col-->
+
+                @if(isAdmin() or isOwner())
+                    <div class="col-sm-7 pull-right">
+                        <div class="btn-toolbar float-right" role="toolbar"
+                             aria-label="@lang('labels.general.toolbar_btn_groups')">
+                            <a href="{{ route('admin.lab.create') }}" class="btn btn-success ml-1"
+                               data-toggle="tooltip" title="@lang('labels.general.create_new')"><i
+                                        class="fas fa-plus-circle"></i></a>
+                        </div>
+
+                    </div><!--col-->
+                @endif
+            </div><!--row-->
+
+            <br>
+            <div class="card">
+                <h5 class="card-header">
+                    Filter
+                    {!! Form::submit('Search', ['id' => 'search_btn', 'class' => 'btn-sm float_right']); !!}
+
+                    <button class="btn-sm float_right" type="button" data-toggle="collapse"
+                            data-target="#collapsePanel" aria-expanded="false" aria-controls="collapseExample">
+                        Collapse
+                    </button>
+
+                </h5>
+                <div id="collapsePanel" class="card-body">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div>Doctors</div>
+                            {!! Form::select('doctors[]', app(\App\Methods\GeneralMethods::class)->getAllDoctors(), null, ['id' => 'doctors', 'class' => 'form-control select2_class_doctor', 'multiple' => 'multiple']); !!}
+                        </div>
+
+                        <div class="col-md-3">
+                            <div>Laboratories</div>
+                            {!! Form::select('labs[]', app(\App\Methods\GeneralMethods::class)->getAllLabs(), null, ['id' => 'labs','class' => 'form-control select2_class_clinic', 'multiple' => 'multiple']); !!}
+                        </div>
+
+                        <div class="col-md-3">
+                            <div>Specialties</div>
+                            {!! Form::select('specialties[]', app(\App\Methods\GeneralMethods::class)->getAllSpecialties(), null, ['id' => 'specialties','class' => 'form-control select2_class_specialties', 'multiple' => 'multiple']); !!}
+                        </div>
+
+                        <div class="col-md-3">
+                            <div>Countries</div>
+                            {!! Form::select('countries[]', app(\App\Methods\GeneralMethods::class)->getAllCountries(), null, ['id' => 'countries','class' => 'form-control select2_class_countries', 'multiple' => 'multiple']); !!}
+                        </div>
+
+                        <div class="col-md-3">
+                            <div>City</div>
+                            {!!  html()->text('city')
+                                ->id('city')
+                                ->class('form-control')
+                                ->placeholder('City')
+                                ->autofocus()  !!}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="load-table">
+
+            </div>
+
+        </div><!--card-body-->
+    </div><!--card-->
+
+
+    <script type="application/javascript">
+        $(document).ready(function () {
+            $('.select2_class_doctor').select2({
+                placeholder: "Select Doctor",
+            });
+            $('.select2_class_clinic').select2({
+                placeholder: "Select Lab",
+            });
+            $('.select2_class_specialties').select2({
+                placeholder: "Select Specialties",
+            });
+            $('.select2_class_countries').select2({
+                placeholder: "Select Countries",
+            });
+            $('.load-table').load('{{route('admin.lab.labIndex')}}?view=true', function () {
+                intDeleteButton();
+            });
+            let body = $('body');
+            body.on('click', '#search_btn', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: "GET",
+                    url: "{{route('admin.lab.labIndex')}}?view=true",
+                    data: {
+                        doctors: $("#doctors").val(),
+                        labs: $("#labs").val(),
+                        specialties: $("#specialties").val(),
+                        countries: $("#countries").val(),
+                        city: $("#city").val(),
+                    },
+                    success: function (result) {
+                        $('.load-table').html(result);
+                        intDeleteButton();
+                    },
+                    error: function (result) {
+                    }
+                });
+            });
+            body.on('click', '.change_status_button', function (e) {
+                e.preventDefault();
+                let url = $(this).attr('href');
+                $.ajax({
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                    },
+                    url: url,
+                    success: function (result) {
+                        $('#search_btn').click();
+                    },
+                    error: function (result) {
+                    }
+                });
+            });
+        });
+    </script>
+
+    <style>
+        .float_right {
+            float: right;
+            margin-left: 3px;
+        }
+    </style>
+
+
+@endsection

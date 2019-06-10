@@ -18,7 +18,11 @@ class Lab extends Model
 
     protected $fillable = [
         'name',
+        'owner_id'
     ];
 
-
+    public function specialties()
+    {
+        return $this->belongsToMany(Specialties::class, 'clinic_specialties', 'clinic_id');
+    }
 }

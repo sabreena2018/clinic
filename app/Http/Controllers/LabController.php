@@ -16,7 +16,7 @@ use App\Http\Requests\Backend\Auth\Role\ManageRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\UpdateRoleRequest;
 use App\Reservations;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 /**
  * Class LabController.
@@ -108,6 +108,8 @@ class LabController extends Controller
             })
             ->orderBy('id', 'asc')
             ->paginate(25);
+
+
         if ($request->get('view', false)) {
             return view('lab.partial.tableLabIndex', compact('labs'));
         }
@@ -159,7 +161,6 @@ class LabController extends Controller
 
     public function store(ClinicRequest $request)
     {
-
         $lab = Lab::query()
             ->create([
                 'name' => $request->get('name'),
@@ -195,7 +196,7 @@ class LabController extends Controller
         $lab->specialties()->syncWithoutDetaching($ids);
 
 
-        return redirect()->route('admin.lab.index')
+        return redirect()->route('admin.lab.labIndex')
             ->withFlashSuccess('The lab was successfully saved.');
     }
 
