@@ -49,7 +49,7 @@
                                     echo $rejectRemove.$acceptRempve;
                                 }
                                 else if ($reservation->status == "confirm-treatment"){
-                                    echo '<a class="btn btn-danger"><i title="require-time"></i>Confirm Treatment</a>';
+                                    echo '<a class="btn btn-danger"><i title="require-time"></i>Service completed</a>';
                                 }
                                 else{
                                       echo $reservation->action_buttons;

@@ -17,6 +17,7 @@ class CreateLabsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->integer('owner_id')->nullable();
+            $table->integer('approved');
             $table->timestamps();
         });
     }

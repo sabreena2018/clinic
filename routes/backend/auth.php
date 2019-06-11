@@ -122,6 +122,9 @@ Route::group(['middleware' => 'redirect_if_private'], function () {
     Route::get('lab', 'Auth\Role\LabController@index')
         ->name('lab.index');
 
+    Route::get('labIndex', 'Auth\Role\LabController@labIndex')
+        ->name('lab.labIndex');
+
     Route::get('lab/create', 'Auth\Role\LabController@create')
         ->name('lab.create');
 

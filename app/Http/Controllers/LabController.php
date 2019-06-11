@@ -16,7 +16,7 @@ use App\Http\Requests\Backend\Auth\Role\ManageRoleRequest;
 use App\Http\Requests\Backend\Auth\Role\UpdateRoleRequest;
 use App\Reservations;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 /**
  * Class LabController.
@@ -63,6 +63,60 @@ class LabController extends Controller
 
     }
 
+    public function labIndex(Request $request)
+    {
+        $doctorsFilter = $request->get('doctors', []);
+        $labsFilter = $request->get('labs', []);
+        $specialtiesFilter = $request->get('specialties', []);
+        $countriesFilter = $request->get('countries', []);
+        $cityFilter = $request->get('city', []);
+        $user = \Auth::user();
+        $labs = Lab::query()
+            ->when($labsFilter, function ($q) use ($labsFilter) {
+                return $q->whereIn('clinics.id', $labsFilter);
+            })
+            ->when($doctorsFilter, function ($q) use ($doctorsFilter) {
+                return $q->whereHas('specialties', function ($query) use ($doctorsFilter) {
+                    $query = $query->join('user_clinic_specialties', 'clinic_specialties.id', '=', 'user_clinic_specialties.clinic_specialties_id')
+                        ->whereIn('user_clinic_specialties.user_id', $doctorsFilter);
+                    return $query;
+                });
+            })
+            ->when($specialtiesFilter, function ($q) use ($specialtiesFilter) {
+                return $q->whereHas('specialties', function ($query) use ($specialtiesFilter) {
+                    return $query->whereIn('specialties.id', $specialtiesFilter);
+                });
+            })
+            ->when($countriesFilter, function ($q) use ($countriesFilter) {
+                return $q->whereIn('clinics.country_id', $countriesFilter);
+            })
+            ->when($cityFilter, function ($q) use ($cityFilter) {
+                return $q->where('clinics.city', 'LIKE', "%$cityFilter%");
+            })
+            ->when($user->type == 'owner', function ($q) use ($user) {
+                return $q->where('owner_id', $user->id);
+            })
+            ->when($user->type == 'patient', function ($q) use ($user) {
+                return $q->where('approved', 1);
+            })
+            ->when($user->type == 'doctor', function ($q) use ($user) {
+                return $q->whereHas('specialties', function ($query) {
+                    $query = $query->join('user_clinic_specialties', 'clinic_specialties.id', '=', 'user_clinic_specialties.clinic_specialties_id')
+                        ->whereIn('user_clinic_specialties.user_id', [currentUser()->id]);
+                    return $query;
+                });
+            })
+            ->orderBy('id', 'asc')
+            ->paginate(25);
+
+
+        if ($request->get('view', false)) {
+            return view('lab.partial.tableLabIndex', compact('labs'));
+        }
+        return view('lab.labIndex', compact('labs'));
+    }
+
+
     /**
      * @param ManageRoleRequest $request
      *
@@ -107,7 +161,6 @@ class LabController extends Controller
 
     public function store(ClinicRequest $request)
     {
-
         $lab = Lab::query()
             ->create([
                 'name' => $request->get('name'),
@@ -143,7 +196,7 @@ class LabController extends Controller
         $lab->specialties()->syncWithoutDetaching($ids);
 
 
-        return redirect()->route('admin.lab.index')
+        return redirect()->route('admin.lab.labIndex')
             ->withFlashSuccess('The lab was successfully saved.');
     }
 

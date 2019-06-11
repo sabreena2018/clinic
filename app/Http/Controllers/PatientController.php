@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Backend\Auth\Role;
 
+use App\ClinicNurse;
 use App\Models\Auth\Lab;
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
 use App\Models\Auth\Clinic;
 use App\Models\Auth\Patient;
+use App\PrivateDoctorRegistration;
 use App\Reservations;
 use Illuminate\Http\Request;
 use App\Models\Auth\Appointment;
@@ -69,6 +71,20 @@ class PatientController extends Controller
                 ->select('id')
                 ->where('owner_id',\Auth::user()->id)
                 ->get();
+
+            $private_doctorsIds = Clinic::query()
+                ->where('clinics.owner_id', \Auth::user()->id)
+                ->join('clinic_specialties', 'clinics.id', '=', 'clinic_specialties.clinic_id')
+                ->join('user_clinic_specialties', 'clinic_specialties.id', '=', 'user_clinic_specialties.clinic_specialties_id')
+                ->pluck('user_clinic_specialties.user_id')
+                ->toArray();
+
+
+            $nurseIds = ClinicNurse::query()
+                ->where('clinic_id',\Auth::user()->id)
+                ->pluck('clinic_nurse.nurse_id')
+                ->toArray();
+
         }
 
 //        DB::enableQueryLog();
@@ -78,13 +94,13 @@ class PatientController extends Controller
             ->join('clinic_user','reservations.id','=','clinic_user.reservation_id')
             ->whereIn('clinic_user.clinic_id',$clinicsIds)
             ->join('clinics','clinics.id','=','clinic_user.clinic_id')
-            ->select('reservations.id','clinics.name','reservations.appointment','reservations.created_at','reservations.type','reservations.status')
+            ->select('reservations.id','clinics.name as name','reservations.appointment','reservations.created_at','reservations.type','reservations.status')
             ->get()->toArray();
 
 //        logger(DB::getQueryLog());
 
         $patientLabs = Reservations::query()
-            ->select('reservations.id','labs.name','reservations.appointment','reservations.created_at','reservations.type','reservations.status')
+            ->select('reservations.id','labs.name as name','reservations.appointment','reservations.created_at','reservations.type','reservations.status')
             ->where('reservations.user_id',$patient->id)
             ->join('lab_registrations','reservations.id','=','lab_registrations.reservation_id')
             ->join('labs','labs.id','=','lab_registrations.lab_id')
@@ -92,7 +108,25 @@ class PatientController extends Controller
             ->get()->toArray();
 
 
-        $patientRecords = array_merge($patientClinics, $patientLabs);
+        $patientDoctors = Reservations::query()
+            ->select('reservations.id','users.name as name','reservations.appointment','reservations.created_at','reservations.type','reservations.status')
+            ->where('reservations.user_id',$patient->id)
+            ->join('private_doctor_registrations','reservations.id','=','private_doctor_registrations.reservation_id')
+            ->join('users','users.id','=','private_doctor_registrations.doctor_id')
+            ->whereIn('private_doctor_registrations.doctor_id',$private_doctorsIds)
+            ->get()->toArray();
+
+
+        $patientNurses = Reservations::query()
+            ->select('reservations.id','users.name as name','reservations.appointment','reservations.created_at','reservations.type','reservations.status')
+            ->where('reservations.user_id',$patient->id)
+            ->join('nurse_registrations','reservations.id','=','nurse_registrations.reservation_id')
+            ->join('users','users.id','=','nurse_registrations.nurse_id')
+            ->whereIn('nurse_registrations.nurse_id',$nurseIds)
+            ->get()->toArray();
+
+
+        $patientRecords = array_merge($patientClinics, $patientLabs,$patientDoctors,$patientNurses);
 
 
         return view('patient.patientReservationRecord', compact('patientRecords'));
