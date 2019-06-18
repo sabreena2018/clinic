@@ -66,7 +66,7 @@ class ReservationController extends Controller
                 break;
             case
                 $type = "doctor";
-                $resObj = user_id;
+                $resObj = $user_id;
         }
 
         $reservations = Reservations::query()

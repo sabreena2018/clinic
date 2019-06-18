@@ -109,7 +109,7 @@ class PatientController extends Controller
 
 
         $patientDoctors = Reservations::query()
-            ->select('reservations.id','users.name as name','reservations.appointment','reservations.created_at','reservations.type','reservations.status')
+            ->select('reservations.id','users.first_name as name','reservations.appointment','reservations.created_at','reservations.type','reservations.status')
             ->where('reservations.user_id',$patient->id)
             ->join('private_doctor_registrations','reservations.id','=','private_doctor_registrations.reservation_id')
             ->join('users','users.id','=','private_doctor_registrations.doctor_id')
@@ -118,7 +118,7 @@ class PatientController extends Controller
 
 
         $patientNurses = Reservations::query()
-            ->select('reservations.id','users.name as name','reservations.appointment','reservations.created_at','reservations.type','reservations.status')
+            ->select('reservations.id','users.first_name as name','reservations.appointment','reservations.created_at','reservations.type','reservations.status')
             ->where('reservations.user_id',$patient->id)
             ->join('nurse_registrations','reservations.id','=','nurse_registrations.reservation_id')
             ->join('users','users.id','=','nurse_registrations.nurse_id')
